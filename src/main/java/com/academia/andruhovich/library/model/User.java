@@ -1,33 +1,43 @@
-package com.academia.andruhovich.library.entity;
+package com.academia.andruhovich.library.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @Entity
-@Table
+@Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "first_name")
 	private String firstName;
-	@Column
+
+	@Column(name = "last_name")
 	private String lastName;
-	@Column
+
+	@Column(name = "email")
 	private String email;
-	@Column
+
+	@Column(name = "password")
 	private String password;
+
 	@CreatedDate
-	private Date createdAt;
+	private ZonedDateTime createdAt;
+
 	@LastModifiedDate
-	private Date updatedAt;
+	private ZonedDateTime updatedAt;
 
 }

@@ -1,7 +1,9 @@
 package com.academia.andruhovich.library.repository;
 
-import com.academia.andruhovich.library.entity.User;
+import com.academia.andruhovich.library.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 }

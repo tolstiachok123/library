@@ -1,29 +1,36 @@
-package com.academia.andruhovich.library.entity;
+package com.academia.andruhovich.library.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "book")
 @EntityListeners(AuditingEntityListener.class)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "title")
 	private String title;
-	@Column
+
+	@Column(name = "price")
 	private BigDecimal price;
-	@Column
+
+	@Column(name = "image_url")
 	private String imageUrl;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -32,8 +39,10 @@ public class Book {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Tag> tags;
+
 	@CreatedDate
-	private Date createdAt;
+	private ZonedDateTime createdAt;
+
 	@LastModifiedDate
-	private Date updatedAt;
+	private ZonedDateTime updatedAt;
 }

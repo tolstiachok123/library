@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="tolstiachok123" id="1">
+        <sql>
+            INSERT INTO author (id, first_name, last_name) VALUES (1, 'Howard Phillips', 'Lovecraft');
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="2">
+        <sql>
+            INSERT INTO book (id, price, image_url, title, author_id) VALUES (1, 45, 'testUrl', 'The Call of Cthulhu', 1);
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="3">
+        <sql>
+            INSERT INTO tag (id, name) VALUES (1, 'Horror');
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="4">
+        <sql>
+            INSERT INTO author_books (author_id, books_id) VALUES (1, 1);
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="5">
+        <sql>
+            INSERT INTO tag_books (tag_id, books_id) VALUES (1, 1);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

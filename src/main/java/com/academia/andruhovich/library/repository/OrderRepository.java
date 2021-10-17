@@ -1,7 +1,9 @@
 package com.academia.andruhovich.library.repository;
 
-import com.academia.andruhovich.library.entity.Order;
+import com.academia.andruhovich.library.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

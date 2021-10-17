@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="tolstiachok123" id="1">
+        <sql>
+            CREATE TABLE `author` (
+            `id` int NOT NULL,
+            `first_name` varchar(255) DEFAULT NULL,
+            `last_name` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="2">
+        <sql>
+            CREATE TABLE `tag` (
+            `id` int NOT NULL,
+            `name` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="3">
+        <sql>
+            CREATE TABLE `book` (
+            `id` int NOT NULL,
+            `created_at` datetime(6) DEFAULT NULL,
+            `image_url` varchar(255) DEFAULT NULL,
+            `price` decimal(19,2) DEFAULT NULL,
+            `title` varchar(255) DEFAULT NULL,
+            `updated_at` datetime(6) DEFAULT NULL,
+            `author_id` int DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            KEY `FKklnrv3weler2ftkweewlky958` (`author_id`),
+            CONSTRAINT `FKklnrv3weler2ftkweewlky958` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="4">
+        <sql>
+            CREATE TABLE `author_books` (
+            `author_id` int NOT NULL,
+            `books_id` int NOT NULL,
+            UNIQUE KEY `UK_fxksjqa1a5dnqf0egcdxlrcna` (`books_id`),
+            KEY `FKfvabqdr9njwv4khjqkf1pbmma` (`author_id`),
+            CONSTRAINT `FKfvabqdr9njwv4khjqkf1pbmma` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`),
+            CONSTRAINT `FKr514ej8rhei197wx3nrvp0qie` FOREIGN KEY (`books_id`) REFERENCES `book` (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="5">
+        <sql>
+            CREATE TABLE `tag_books` (
+            `tag_id` int NOT NULL,
+            `books_id` int NOT NULL,
+            KEY `FK_books_id` (`books_id`),
+            KEY `FK_tag_id` (`tag_id`),
+            CONSTRAINT `FK_books_id` FOREIGN KEY (`books_id`) REFERENCES `book` (`id`),
+            CONSTRAINT `FK_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
