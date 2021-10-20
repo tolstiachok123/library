@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "book")
-@EntityListeners(AuditingEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "book")
+@EntityListeners(AuditingEntityListener.class)
 public class Book {
 
 	@Id

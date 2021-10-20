@@ -18,18 +18,33 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	lombokMapstructBindingVersion = '0.2.0'
+	lombokVersion = '1.18.20'
+	mapstructVersion = '1.4.2.Final'
+
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
+	implementation 'org.springframework.data:spring-data-rest-webmvc:3.5.6'
+
 	implementation 'org.liquibase:liquibase-core'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'mysql:mysql-connector-java:8.0.26'
+	//mapstruct
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	//lombok
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+	implementation "org.projectlombok:lombok:${lombokVersion}"
+	//lombok-mapstruct
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	implementation "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	implementation 'mysql:mysql-connector-java:8.0.26'
-	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-	implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
 }
 
 test {

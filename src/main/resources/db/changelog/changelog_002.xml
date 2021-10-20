@@ -25,12 +25,6 @@
 
     <changeSet author="tolstiachok123" id="4">
         <sql>
-            INSERT INTO author_books (author_id, books_id) VALUES (1, 1);
-        </sql>
-    </changeSet>
-
-    <changeSet author="tolstiachok123" id="5">
-        <sql>
             INSERT INTO tag_books (tag_id, books_id) VALUES (1, 1);
         </sql>
     </changeSet>
