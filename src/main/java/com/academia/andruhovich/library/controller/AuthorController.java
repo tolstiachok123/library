@@ -6,13 +6,13 @@ import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
+@Validated
 @RestController
 @RequestMapping("/api/authors")
 @RequiredArgsConstructor
@@ -28,5 +28,23 @@ public class AuthorController {
 	@GetMapping("/{id}")
 	public AuthorDto getAuthor(@PathVariable Long id) {
 		return service.getById(id);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Long> deleteAuthor(@PathVariable Long id) {
+		service.deleteById(id);
+		return new ResponseEntity<>(id, HttpStatus.OK);
+	}
+
+	@PostMapping
+	public ResponseEntity<?> createAuthor(@RequestBody AuthorDto dto) {
+		service.add(dto);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+
+	@PutMapping
+	public ResponseEntity<?> updateAuthor(@RequestBody AuthorDto dto) {
+		service.update(dto);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

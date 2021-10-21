@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 
 @Slf4j
 @RestControllerAdvice
-public class ControllerExceptionHandler {
+public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = Throwable.class)
 	public ResponseEntity<?> handle(Throwable throwable) {

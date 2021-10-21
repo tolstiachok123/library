@@ -32,5 +32,27 @@ public class AuthorServiceImpl implements AuthorService {
 				new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id))));
 	}
 
+	@Override
+	public void deleteById(Long id) throws ResourceNotFoundException {
+		if (repository.existsById(id)) {
+			repository.deleteById(id);
+		} else {
+			throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id));
+		}
+	}
 
+	@Override
+	public void add(AuthorDto dto) {
+		dto.setId(null);
+		repository.save(mapper.dtoToModel(dto));
+	}
+
+	@Override
+	public void update(AuthorDto dto) throws ResourceNotFoundException {
+		if (repository.existsById(dto.getId())) {
+			repository.save(mapper.dtoToModel(dto));
+		} else {
+			throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, dto.getId()));
+		}
+	}
 }
