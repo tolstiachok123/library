@@ -4,6 +4,7 @@ import com.academia.andruhovich.library.dto.AuthorDto;
 import com.academia.andruhovich.library.exception.ErrorMessages;
 import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.mapper.AuthorMapper;
+import com.academia.andruhovich.library.model.Author;
 import com.academia.andruhovich.library.repository.AuthorRepository;
 import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +43,10 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public void add(AuthorDto dto) {
+	public AuthorDto add(AuthorDto dto) {
 		dto.setId(null);
-		repository.save(mapper.dtoToModel(dto));
+		Author author = repository.save(mapper.dtoToModel(dto));
+		return mapper.modelToDto(author);
 	}
 
 	@Override

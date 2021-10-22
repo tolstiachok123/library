@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Validated
 @RestController
@@ -33,18 +33,17 @@ public class AuthorController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Long> deleteAuthor(@PathVariable Long id) {
 		service.deleteById(id);
-		return new ResponseEntity<>(id, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createAuthor(@RequestBody AuthorDto dto) {
-		service.add(dto);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	public ResponseEntity<AuthorDto> createAuthor(@RequestBody @Valid AuthorDto dto) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.add(dto));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> updateAuthor(@RequestBody AuthorDto dto) {
+	public ResponseEntity<?> updateAuthor(@RequestBody @Valid AuthorDto dto) {
 		service.update(dto);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

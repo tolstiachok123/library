@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 @Data
@@ -13,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @Component
 public class AuthorDto {
 
-	@Pattern(regexp = "\\d*")
+	@Min(1)
 	private Long id;
 	@Pattern(regexp = "[A-ZА-Я][a-zа-я]*[-\\s]?([A-ZА-Я][a-zа-я]*[-\\s]?)*")
 	private String firstName;
