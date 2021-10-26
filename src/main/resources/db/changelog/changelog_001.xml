@@ -28,17 +28,17 @@
 
     <changeSet author="tolstiachok123" id="3">
         <sql>
-            CREATE TABLE `book` (
-            `id` int NOT NULL AUTO_INCREMENT,
-            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `image_url` varchar(255) DEFAULT NULL,
-            `price` decimal(19,2) DEFAULT NULL,
-            `title` varchar(255) DEFAULT NULL,
-            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `author_id` int NOT NULL,
-            PRIMARY KEY (`id`),
-            KEY `fk_author_id` (`author_id`),
-            CONSTRAINT `fk_author_id` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`)
+            CREATE TABLE book (
+            id int NOT NULL AUTO_INCREMENT,
+            created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            image_url varchar(255) DEFAULT NULL,
+            price decimal(19,2) DEFAULT NULL,
+            title varchar(255) DEFAULT NULL,
+            updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            author_id int NOT NULL,
+            PRIMARY KEY (id),
+<!--            KEY fk_author_id (author_id),-->
+            CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES author (id)
             );
         </sql>
     </changeSet>
@@ -48,8 +48,8 @@
             CREATE TABLE `tag_books` (
             `tag_id` int NOT NULL,
             `books_id` int NOT NULL,
-            KEY `fk_books_id` (`books_id`),
-            KEY `fk_tag_id` (`tag_id`),
+<!--            KEY `fk_books_id` (`books_id`),-->
+<!--            KEY `fk_tag_id` (`tag_id`),-->
             CONSTRAINT `fk_books_id` FOREIGN KEY (`books_id`) REFERENCES `book` (`id`),
             CONSTRAINT `fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
             );
