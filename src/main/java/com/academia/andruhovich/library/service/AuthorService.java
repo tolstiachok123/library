@@ -14,5 +14,5 @@ public interface AuthorService {
 
 	AuthorDto add(AuthorDto dto);
 
-	void update(AuthorDto dto);
+	void update(Long id, AuthorDto dto);
 }

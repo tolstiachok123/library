@@ -9,6 +9,7 @@ import com.academia.andruhovich.library.repository.AuthorRepository;
 import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ public class AuthorServiceImpl implements AuthorService {
 
 	@Override
 	public AuthorDto getById(Long id) throws ResourceNotFoundException {
-		return mapper.modelToDto(repository.getAuthorById(id).orElseThrow(() ->
+		return mapper.modelToDto(repository.findById(id).orElseThrow(() ->
 				new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id))));
 	}
 
@@ -42,19 +43,20 @@ public class AuthorServiceImpl implements AuthorService {
 		}
 	}
 
+	@Transactional
 	@Override
 	public AuthorDto add(AuthorDto dto) {
-		dto.setId(null);
 		Author author = repository.save(mapper.dtoToModel(dto));
 		return mapper.modelToDto(author);
 	}
 
+	@Transactional
 	@Override
-	public void update(AuthorDto dto) throws ResourceNotFoundException {
-		if (repository.existsById(dto.getId())) {
-			repository.save(mapper.dtoToModel(dto));
-		} else {
-			throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, dto.getId()));
-		}
+	public void update(Long id, AuthorDto dto) {
+		Author author = repository.findById(id).orElseThrow(() ->
+				new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
+		author.setLastName(dto.getLastName());                                                          //relocate to another class
+		author.setFirstName(dto.getFirstName());
+		repository.save(author);
 	}
 }

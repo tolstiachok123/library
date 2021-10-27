@@ -11,7 +11,6 @@ import javax.validation.constraints.Pattern;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
 public class AuthorDto {
 
 	@Min(1)

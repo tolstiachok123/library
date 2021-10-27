@@ -3,15 +3,14 @@ package com.academia.andruhovich.library.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
 public class BookDto {
 
 	private Long id;
@@ -19,5 +18,8 @@ public class BookDto {
 	private BigDecimal price;
 	private String imageUrl;
 	private Long authorId;
-	private List<Long> tagIdList;
+	private Set<TagDto> tags;
+	private ZonedDateTime createdAt;
+	private ZonedDateTime updatedAt;
+
 }

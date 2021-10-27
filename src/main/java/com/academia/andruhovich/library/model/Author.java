@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +25,6 @@ public class Author {
 	private String lastName;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-	private List<Book> books;
+	private Set<Book> books;
 
 }

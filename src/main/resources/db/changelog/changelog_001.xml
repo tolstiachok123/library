@@ -20,7 +20,7 @@
         <sql>
             CREATE TABLE `tag` (
             `id` int NOT NULL AUTO_INCREMENT,
-            `name` varchar(255) DEFAULT NULL,
+            `name` varchar(255) DEFAULT NULL UNIQUE,
             PRIMARY KEY (`id`)
             );
         </sql>
@@ -37,7 +37,6 @@
             updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             author_id int NOT NULL,
             PRIMARY KEY (id),
-<!--            KEY fk_author_id (author_id),-->
             CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES author (id)
             );
         </sql>
@@ -48,8 +47,6 @@
             CREATE TABLE `tag_books` (
             `tag_id` int NOT NULL,
             `books_id` int NOT NULL,
-<!--            KEY `fk_books_id` (`books_id`),-->
-<!--            KEY `fk_tag_id` (`tag_id`),-->
             CONSTRAINT `fk_books_id` FOREIGN KEY (`books_id`) REFERENCES `book` (`id`),
             CONSTRAINT `fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
             );

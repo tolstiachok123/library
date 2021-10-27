@@ -1,13 +1,14 @@
 package com.academia.andruhovich.library.mapper;
 
-import com.academia.andruhovich.library.dto.BookDto;
+import com.academia.andruhovich.library.dto.BookRequestDto;
+import com.academia.andruhovich.library.dto.BookResponseDto;
 import com.academia.andruhovich.library.model.Book;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 
-	Book dtoToModel(BookDto bookDto);
+	Book dtoToModel(BookRequestDto bookDto);
 
-	BookDto modelToDto(Book book);
+	BookResponseDto modelToDto(Book book);
 }

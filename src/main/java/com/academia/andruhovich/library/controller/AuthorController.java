@@ -41,9 +41,9 @@ public class AuthorController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.add(dto));
 	}
 
-	@PutMapping
-	public ResponseEntity<?> updateAuthor(@RequestBody @Valid AuthorDto dto) {
-		service.update(dto);
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateAuthor(@PathVariable Long id, @RequestBody @Valid AuthorDto dto) {
+		service.update(id, dto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

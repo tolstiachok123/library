@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -38,7 +39,7 @@ public class Book {
 	private Author author;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Tag> tags;
+	private Set<Tag> tags;
 
 	@CreatedDate
 	private ZonedDateTime createdAt;

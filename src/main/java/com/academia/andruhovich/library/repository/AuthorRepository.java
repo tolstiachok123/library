@@ -9,7 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
-
-	@Query("select a from Author a where a.id = :id")
-	Optional<Author> getAuthorById(Long id);
 }
