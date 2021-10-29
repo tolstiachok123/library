@@ -10,9 +10,9 @@ import static com.academia.andruhovich.library.util.Constants.ID;
 import static com.academia.andruhovich.library.util.Constants.FIRST_NAME;
 import static com.academia.andruhovich.library.util.Constants.LAST_NAME;
 
-public class ObjectCreationTestHelper {
+public class AuthorHelper {
 
-	public static Author createAuthor() {
+	public static Author createModel() {
 		Author author = new Author();
 		author.setId(ID);
 		author.setFirstName(FIRST_NAME);
@@ -21,7 +21,7 @@ public class ObjectCreationTestHelper {
 		return author;
 	}
 
-	public static AuthorDto createAuthorDto() {
+	public static AuthorDto createDto() {
 		AuthorDto authorDto = new AuthorDto();
 		authorDto.setId(ID);
 		authorDto.setFirstName(FIRST_NAME);
@@ -29,7 +29,7 @@ public class ObjectCreationTestHelper {
 		return authorDto;
 	}
 
-	public static List<Author> createAuthorList() {
+	public static List<Author> createModels() {
 		List<Author> authors = new ArrayList<>();
 		authors.add(new Author(ID, FIRST_NAME, LAST_NAME, null));
 		return authors;

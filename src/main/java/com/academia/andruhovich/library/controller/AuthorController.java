@@ -1,7 +1,6 @@
 package com.academia.andruhovich.library.controller;
 
 import com.academia.andruhovich.library.dto.AuthorDto;
-import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

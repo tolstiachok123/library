@@ -29,13 +29,13 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public AuthorDto getById(Long id) throws ResourceNotFoundException {
+	public AuthorDto getById(Long id) {
 		return mapper.modelToDto(repository.findById(id).orElseThrow(() ->
 				new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id))));
 	}
 
 	@Override
-	public void deleteById(Long id) throws ResourceNotFoundException {
+	public void deleteById(Long id) {
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
 		} else {

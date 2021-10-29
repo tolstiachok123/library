@@ -12,9 +12,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
-import static com.academia.andruhovich.library.util.ObjectCreationTestHelper.createAuthorList;
-import static com.academia.andruhovich.library.util.ObjectCreationTestHelper.createAuthorDto;
-import static com.academia.andruhovich.library.util.ObjectCreationTestHelper.createAuthor;
+import static com.academia.andruhovich.library.util.AuthorHelper.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,9 +28,9 @@ public class AuthorServiceImplTest {
 	@Mock
 	private AuthorRepository repository;
 
-	private final List<Author> authors = createAuthorList();
-	private final AuthorDto authorDto = createAuthorDto();
-	private final Author author = createAuthor();
+	private final List<Author> authors = createModels();
+	private final AuthorDto authorDto = createDto();
+	private final Author author = createModel();
 
 	@BeforeEach
 	void setUp() {
@@ -42,42 +40,57 @@ public class AuthorServiceImplTest {
 
 	@Test
 	void getAll() {
+		//given
 		when(repository.findAll()).thenReturn(authors);
 		when(mapper.modelToDto(any())).thenReturn(authorDto);
+		//when
 		List<AuthorDto> authors = service.getAll();
+		//then
 		assertNotNull(authors);
 		assertEquals(authors.get(0), authorDto);
 	}
 
 	@Test
 	void getById() {
+		//given
 		when(repository.findById(any())).thenReturn(Optional.of(author));
 		when(mapper.modelToDto(any())).thenReturn(authorDto);
+		//when
 		AuthorDto dto = service.getById(author.getId());
+		//then
 		assertEquals(dto.getFirstName(), author.getFirstName());
 	}
 
 	@Test
 	void add() {
+		//given
 		when(mapper.dtoToModel(any())).thenReturn(author);
 		when(repository.save(any())).thenReturn(author);
 		when(mapper.modelToDto(any())).thenReturn(authorDto);
+		//when
 		AuthorDto dto = service.add(authorDto);
+		//then
 		assertNotNull(dto.getId());
 	}
 
 	@Test
 	void update() {
+		//given
 		when(repository.findById(any())).thenReturn(Optional.of(author));
 		when(repository.save(any())).thenReturn(author);
+		//when
 		service.update(authorDto.getId(), authorDto);
+		//then
 		verify(repository).save(any());
 	}
 
 	@Test
 	void deleteById() {
+		//given
 		when(repository.existsById(any())).thenReturn(true);
+		//when
 		service.deleteById(author.getId());
+		//then
 		verify(repository).deleteById(author.getId());
 	}
 }
