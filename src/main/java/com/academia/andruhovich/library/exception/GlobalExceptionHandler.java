@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = Throwable.class)
-	public ResponseEntity<?> handle(Throwable throwable) {
+	public ResponseEntity<Void> handle(Throwable throwable) {
 		log.error("Caught unhandled exception: {}", throwable.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}

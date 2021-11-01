@@ -1,6 +1,7 @@
 package com.academia.andruhovich.library.exception.error;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
