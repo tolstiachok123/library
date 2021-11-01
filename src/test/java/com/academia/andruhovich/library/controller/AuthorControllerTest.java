@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class AuthorControllerTest {
 
-	private final AuthorDto dto = AuthorHelper.createDto();
+	private final AuthorDto dto = AuthorHelper.createRequestDto();
 
 	@Autowired
 	AuthorService service;
@@ -35,7 +35,7 @@ public class AuthorControllerTest {
 	@Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
 	@Sql(value = "classpath:/sql/clearAuthor.sql", executionPhase = AFTER_TEST_METHOD)
 	@Test
-	public void getAuthors() throws Exception {
+	void getAuthors() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders
 				.get("/api/authors")
 				.accept(APPLICATION_JSON))
@@ -48,7 +48,7 @@ public class AuthorControllerTest {
 	@Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
 	@Sql(value = "classpath:/sql/clearAuthor.sql", executionPhase = AFTER_TEST_METHOD)
 	@Test
-	public void getAuthor() throws Exception {
+	void getAuthor() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders
 				.get("/api/authors/{id}", 1)
 				.accept(APPLICATION_JSON))
@@ -60,15 +60,15 @@ public class AuthorControllerTest {
 	@Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
 	@Sql(value = "classpath:/sql/clearAuthor.sql", executionPhase = AFTER_TEST_METHOD)
 	@Test
-	public void deleteAuthor() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.delete("/api/authors/{id}", 1) )
+	void deleteAuthor() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/authors/{id}", 1))
 				.andExpect(status().isNoContent());
 	}
 
 	@Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
 	@Sql(value = "classpath:/sql/clearAuthor.sql", executionPhase = AFTER_TEST_METHOD)
 	@Test
-	public void createAuthor() throws Exception {
+	void createAuthor() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders
 				.post("/api/authors")
 				.content(convertToJsonString(dto))
@@ -81,7 +81,7 @@ public class AuthorControllerTest {
 	@Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
 	@Sql(value = "classpath:/sql/clearAuthor.sql", executionPhase = AFTER_TEST_METHOD)
 	@Test
-	public void updateAuthor() throws Exception {
+	void updateAuthor() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders
 				.put("/api/authors/{id}", 1)
 				.content(convertToJsonString(dto))

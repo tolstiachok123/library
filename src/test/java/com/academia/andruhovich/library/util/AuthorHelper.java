@@ -21,9 +21,17 @@ public class AuthorHelper {
 		return author;
 	}
 
-	public static AuthorDto createDto() {
+	public static AuthorDto createRequestDto() {
 		AuthorDto authorDto = new AuthorDto();
 		authorDto.setId(null);
+		authorDto.setFirstName(FIRST_NAME);
+		authorDto.setLastName(LAST_NAME);
+		return authorDto;
+	}
+
+	public static AuthorDto createResponseDto() {
+		AuthorDto authorDto = new AuthorDto();
+		authorDto.setId(ID);
 		authorDto.setFirstName(FIRST_NAME);
 		authorDto.setLastName(LAST_NAME);
 		return authorDto;

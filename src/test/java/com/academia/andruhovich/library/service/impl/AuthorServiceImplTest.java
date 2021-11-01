@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-public class AuthorServiceImplTest {
+class AuthorServiceImplTest {
 
 	private AuthorServiceImpl service;
 
@@ -29,7 +29,8 @@ public class AuthorServiceImplTest {
 	private AuthorRepository repository;
 
 	private final List<Author> authors = createModels();
-	private final AuthorDto authorDto = createDto();
+	private final AuthorDto authorRequestDto = createRequestDto();
+	private final AuthorDto authorResponseDto = createResponseDto();
 	private final Author author = createModel();
 
 	@BeforeEach
@@ -42,19 +43,19 @@ public class AuthorServiceImplTest {
 	void getAll() {
 		//given
 		when(repository.findAll()).thenReturn(authors);
-		when(mapper.modelToDto(any())).thenReturn(authorDto);
+		when(mapper.modelToDto(any())).thenReturn(authorResponseDto);
 		//when
 		List<AuthorDto> authors = service.getAll();
 		//then
 		assertNotNull(authors);
-		assertEquals(authors.get(0), authorDto);
+		assertEquals(authors.get(0), authorResponseDto);
 	}
 
 	@Test
 	void getById() {
 		//given
 		when(repository.findById(any())).thenReturn(Optional.of(author));
-		when(mapper.modelToDto(any())).thenReturn(authorDto);
+		when(mapper.modelToDto(any())).thenReturn(authorResponseDto);
 		//when
 		AuthorDto dto = service.getById(author.getId());
 		//then
@@ -66,9 +67,9 @@ public class AuthorServiceImplTest {
 		//given
 		when(mapper.dtoToModel(any())).thenReturn(author);
 		when(repository.save(any())).thenReturn(author);
-		when(mapper.modelToDto(any())).thenReturn(authorDto);
+		when(mapper.modelToDto(any())).thenReturn(authorResponseDto);
 		//when
-		AuthorDto dto = service.add(authorDto);
+		AuthorDto dto = service.add(authorRequestDto);
 		//then
 		assertNotNull(dto.getId());
 	}
@@ -79,7 +80,7 @@ public class AuthorServiceImplTest {
 		when(repository.findById(any())).thenReturn(Optional.of(author));
 		when(repository.save(any())).thenReturn(author);
 		//when
-		service.update(authorDto.getId(), authorDto);
+		service.update(author.getId(), authorRequestDto);
 		//then
 		verify(repository).save(any());
 	}
