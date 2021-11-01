@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="tolstiachok123" id="1">
+        <sql>
+            CREATE TABLE `author` (
+            `id` BIGINT NOT NULL AUTO_INCREMENT,
+            `first_name` varchar(255) DEFAULT NULL,
+            `last_name` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="2">
+        <sql>
+            CREATE TABLE `tag` (
+            `id` BIGINT NOT NULL AUTO_INCREMENT,
+            `name` varchar(255) DEFAULT NULL UNIQUE,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="3">
+        <sql>
+            CREATE TABLE book (
+            id BIGINT NOT NULL AUTO_INCREMENT,
+            created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            image_url varchar(255) DEFAULT NULL,
+            price decimal(19,2) DEFAULT NULL,
+            title varchar(255) DEFAULT NULL,
+            updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            author_id BIGINT NOT NULL,
+            PRIMARY KEY (id),
+            CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES author (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="4">
+        <sql>
+            CREATE TABLE `tag_books` (
+            `tag_id` BIGINT NOT NULL,
+            `books_id` BIGINT NOT NULL,
+            CONSTRAINT `fk_books_id` FOREIGN KEY (`books_id`) REFERENCES `book` (`id`),
+            CONSTRAINT `fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
