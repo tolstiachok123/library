@@ -17,9 +17,8 @@ public class BookDto {
 	private String title;
 	private BigDecimal price;
 	private String imageUrl;
-	private Long authorId;
+	private AuthorDto author;
 	private Set<TagDto> tags;
 	private ZonedDateTime createdAt;
 	private ZonedDateTime updatedAt;
-
 }

@@ -2,11 +2,16 @@ package com.academia.andruhovich.library.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -20,6 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -43,12 +49,12 @@ public class Book {
 	@Column(name = "image_url")
 	private String imageUrl;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne                                //default FetchType,EAGER
 	@JoinColumn(name = "author_id")
 	private Author author;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<Tag> tags;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<Tag> tags = new HashSet<>();
 
 	@CreatedDate
 	private ZonedDateTime createdAt;

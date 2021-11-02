@@ -18,4 +18,8 @@ public class AuthorDto {
 	private String firstName;
 	@Pattern(regexp = "[A-ZА-Я][a-zа-я]*[-\\s]?([A-ZА-Я][a-zа-я]*[-\\s]?)*")
 	private String lastName;
+
+	AuthorDto(Long id) {
+		this.id = id;
+	}
 }
