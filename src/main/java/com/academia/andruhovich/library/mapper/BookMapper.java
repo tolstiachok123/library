@@ -5,15 +5,19 @@ import com.academia.andruhovich.library.model.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
+@Mapper(componentModel = "spring", imports = {ZonedDateTime.class, ZoneId.class})
 public interface BookMapper {
 
-	//	@Mapping(source = "author", target = "author")
-	Book dtoToModel(BookDto requestDto);
+    @Mapping(source = "createdAt", target = "createdAt", defaultExpression = "java( ZonedDateTime.now(ZoneId.of(\"Europe/Minsk\")) )")
+    @Mapping(target = "updatedAt", expression = "java( ZonedDateTime.now(ZoneId.of(\"Europe/Minsk\")) )")
+    Book dtoToModel(BookDto dto);
 
-//	Book responseDtoToModel(BookResponseDto responseDto);
+    @Mapping(source = "existingId", target = "id")
+    Book dtoToModel(Long existingId, BookDto dto);
 
-	//	@Mapping(source="author", target="authorDto")
-	BookDto modelToDto(Book book);
+    BookDto modelToDto(Book book);
 
 }

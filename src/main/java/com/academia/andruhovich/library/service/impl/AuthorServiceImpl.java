@@ -53,10 +53,10 @@ public class AuthorServiceImpl implements AuthorService {
 	@Transactional
 	@Override
 	public void update(Long id, AuthorDto dto) {
-		Author author = repository.findById(id).orElseThrow(() ->
-				new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
-		author.setLastName(dto.getLastName());                                                          //relocate to another class
-		author.setFirstName(dto.getFirstName());
-		repository.save(author);
+		if (repository.existsById(id)) {
+			repository.save(mapper.dtoToModel(id, dto));
+		} else {
+			throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id));
+		}
 	}
 }

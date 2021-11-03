@@ -10,7 +10,9 @@ import com.academia.andruhovich.library.repository.BookRepository;
 import com.academia.andruhovich.library.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +22,6 @@ public class BookServiceImpl implements BookService {
 
     private final BookMapper mapper;
     private final BookRepository repository;
-    private final AuthorRepository authorRepository;
 
 
     @Override
@@ -45,11 +46,21 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Transactional
     @Override
     public BookDto add(BookDto dto) {
         Book book = repository.save(mapper.dtoToModel(dto));
         return mapper.modelToDto(book);
     }
 
+    @Transactional
+    @Override
+    public void update(Long id, BookDto dto) {
+        if (repository.existsById(id)) {
+            repository.save(mapper.dtoToModel(id, dto));
+        } else {
+            throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id));
+        }
+    }
 
 }

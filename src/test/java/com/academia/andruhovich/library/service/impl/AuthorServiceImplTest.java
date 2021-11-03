@@ -77,7 +77,9 @@ class AuthorServiceImplTest {
 	@Test
 	void update() {
 		//given
-		when(repository.findById(any())).thenReturn(Optional.of(author));
+//		when(repository.findById(any())).thenReturn(Optional.of(author));
+		when(repository.existsById(any())).thenReturn(true);
+		when(mapper.dtoToModel(any())).thenReturn(author);
 		when(repository.save(any())).thenReturn(author);
 		//when
 		service.update(author.getId(), authorRequestDto);

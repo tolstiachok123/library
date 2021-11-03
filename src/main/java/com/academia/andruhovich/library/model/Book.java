@@ -24,6 +24,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +34,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "book")
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 public class Book {
 
 	@Id
@@ -56,9 +57,9 @@ public class Book {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Tag> tags = new HashSet<>();
 
-	@CreatedDate
+    //	@CreatedDate
 	private ZonedDateTime createdAt;
 
-	@LastModifiedDate
+    //	@LastModifiedDate
 	private ZonedDateTime updatedAt;
 }
