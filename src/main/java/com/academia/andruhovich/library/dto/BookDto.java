@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -18,6 +18,7 @@ public class BookDto {
 	private String title;
 	private BigDecimal price;
 	private String imageUrl;
+	@NotNull
 	private AuthorDto author;
 	private Set<TagDto> tags;
 	private ZonedDateTime createdAt;

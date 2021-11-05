@@ -30,33 +30,33 @@ public class AuthorServiceImpl implements AuthorService {
 
 	@Override
 	public AuthorDto getById(Long id) {
-		return mapper.modelToDto(repository.findById(id).orElseThrow(() ->
-				new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id))));
-	}
+        return mapper.modelToDto(getModelById(id));
+    }
 
 	@Override
 	public void deleteById(Long id) {
-		if (repository.existsById(id)) {
-			repository.deleteById(id);
-		} else {
-			throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id));
-		}
-	}
+        getModelById(id);
+        repository.deleteById(id);
+    }
 
-	@Transactional
-	@Override
-	public AuthorDto add(AuthorDto dto) {
-		Author author = repository.save(mapper.dtoToModel(dto));
-		return mapper.modelToDto(author);
-	}
+    @Transactional
+    @Override
+    public AuthorDto add(AuthorDto dto) {
+        Author author = repository.save(mapper.dtoToModel(dto));
+        return mapper.modelToDto(author);
+    }
 
-	@Transactional
-	@Override
-	public void update(Long id, AuthorDto dto) {
-		if (repository.existsById(id)) {
-			repository.save(mapper.dtoToModel(id, dto));
-		} else {
-			throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id));
-		}
-	}
+    @Transactional
+    @Override
+    public void update(Long id, AuthorDto dto) {
+        getModelById(id);
+        repository.save(mapper.dtoToModel(id, dto));
+    }
+
+
+    @Override
+    public Author getModelById(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
+    }
 }

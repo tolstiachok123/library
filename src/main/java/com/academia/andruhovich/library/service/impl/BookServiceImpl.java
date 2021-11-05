@@ -5,14 +5,14 @@ import com.academia.andruhovich.library.exception.ErrorMessages;
 import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.mapper.BookMapper;
 import com.academia.andruhovich.library.model.Book;
-import com.academia.andruhovich.library.repository.AuthorRepository;
 import com.academia.andruhovich.library.repository.BookRepository;
+import com.academia.andruhovich.library.service.AuthorService;
 import com.academia.andruhovich.library.service.BookService;
+import com.academia.andruhovich.library.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,47 +20,53 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    private final BookMapper mapper;
-    private final BookRepository repository;
+    private final BookMapper bookMapper;
+    private final BookRepository bookRepository;
+    private final AuthorService authorService;
+    private final TagService tagService;
 
 
     @Override
     public List<BookDto> getAll() {
-        return repository.findAll().stream()
-                .map(mapper::modelToDto)
+        return bookRepository.findAll().stream()
+                .map(bookMapper::modelToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public BookDto getById(Long id) {
-        return mapper.modelToDto(repository.findById(id).orElseThrow(() ->
+        return bookMapper.modelToDto(bookRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id))));
     }
 
     @Override
     public void deleteById(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-        } else {
-            throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id));
-        }
+        getModelById(id);
+        bookRepository.deleteById(id);
     }
 
     @Transactional
     @Override
     public BookDto add(BookDto dto) {
-        Book book = repository.save(mapper.dtoToModel(dto));
-        return mapper.modelToDto(book);
+        Book book = bookMapper.dtoToModel(dto);
+        book.setAuthor(authorService.getModelById(book.getAuthor().getId()));
+        book.setTags(tagService.handleTags(book.getTags()));
+        return bookMapper.modelToDto(bookRepository.save(book));
     }
 
     @Transactional
     @Override
     public void update(Long id, BookDto dto) {
-        if (repository.existsById(id)) {
-            repository.save(mapper.dtoToModel(id, dto));
-        } else {
-            throw new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id));
-        }
+        getModelById(id);
+        Book book = bookMapper.dtoToModel(id, dto);
+        book.setAuthor(authorService.getModelById(book.getAuthor().getId()));
+        book.setTags(tagService.handleTags(book.getTags()));
+        bookRepository.save(book);
+    }
+
+    private Book getModelById(Long id) {
+        return bookRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
     }
 
 }

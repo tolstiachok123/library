@@ -77,8 +77,7 @@ class AuthorServiceImplTest {
 	@Test
 	void update() {
 		//given
-//		when(repository.findById(any())).thenReturn(Optional.of(author));
-		when(repository.existsById(any())).thenReturn(true);
+		when(repository.findById(any())).thenReturn(Optional.of(author));
 		when(mapper.dtoToModel(any())).thenReturn(author);
 		when(repository.save(any())).thenReturn(author);
 		//when
@@ -90,7 +89,7 @@ class AuthorServiceImplTest {
 	@Test
 	void deleteById() {
 		//given
-		when(repository.existsById(any())).thenReturn(true);
+		when(repository.findById(any())).thenReturn(Optional.of(author));
 		//when
 		service.deleteById(author.getId());
 		//then

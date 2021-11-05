@@ -6,7 +6,11 @@ plugins {
 
 group = 'com.academia.andruhovich'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+
+java {
+	sourceCompatibility = JavaVersion.toVersion("11")
+	targetCompatibility = JavaVersion.toVersion("11")
+}
 
 configurations {
 	compileOnly {

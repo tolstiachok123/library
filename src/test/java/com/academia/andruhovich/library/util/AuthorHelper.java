@@ -6,11 +6,11 @@ import com.academia.andruhovich.library.model.Author;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthorHelper {
+import static com.academia.andruhovich.library.util.Constants.FIRST_NAME;
+import static com.academia.andruhovich.library.util.Constants.ID;
+import static com.academia.andruhovich.library.util.Constants.LAST_NAME;
 
-	public static final Long ID = 1L;
-	public static final String FIRST_NAME = "Ray";
-	public static final String LAST_NAME = "Bradbury";
+public class AuthorHelper {
 
 	public static Author createModel() {
 		Author author = new Author();
