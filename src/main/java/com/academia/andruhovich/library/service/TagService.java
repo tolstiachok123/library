@@ -8,4 +8,5 @@ public interface TagService {
 
     Set<Tag> handleTags(Set<Tag> tags);
 
+    Set<Tag> handleTags(Set<Tag> newTags, Set<Tag> deprecatedTags);
 }

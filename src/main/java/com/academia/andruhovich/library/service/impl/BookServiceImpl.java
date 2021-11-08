@@ -35,8 +35,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getById(Long id) {
-        return bookMapper.modelToDto(bookRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id))));
+        return bookMapper.modelToDto(getModelById(id));
     }
 
     @Override
@@ -57,10 +56,10 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void update(Long id, BookDto dto) {
-        getModelById(id);
+        Book deprecatedBook = getModelById(id);
         Book book = bookMapper.dtoToModel(id, dto);
         book.setAuthor(authorService.getModelById(book.getAuthor().getId()));
-        book.setTags(tagService.handleTags(book.getTags()));
+        book.setTags(tagService.handleTags(book.getTags(), deprecatedBook.getTags()));
         bookRepository.save(book);
     }
 
