@@ -1,0 +1,1 @@
+INSERT INTO book_tags (tags_id, books_id) VALUES (1, 1);

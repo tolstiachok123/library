@@ -1,5 +1,6 @@
 package com.academia.andruhovich.library.util;
 
+import com.academia.andruhovich.library.dto.TagDto;
 import com.academia.andruhovich.library.model.Tag;
 
 import java.util.HashSet;
@@ -27,5 +28,11 @@ public class TagHelper {
         Set<Tag> tags = new HashSet<>();
         tags.add(new Tag(null, TAG_NAME, null));
         return tags;
+    }
+
+    public static Set<TagDto> createNewTagDtos() {
+        Set<TagDto> tagDtos = new HashSet<>();
+        tagDtos.add(new TagDto(null, TAG_NAME));
+        return tagDtos;
     }
 }
