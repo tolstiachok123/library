@@ -17,15 +17,15 @@ public class TagHelper {
         return tag;
     }
 
-    public static Tag createNewTag() {
-        Tag tag = new Tag();
-        tag.setName(TAG_NAME);
-        return tag;
-    }
-
-    public static Set<Tag> createTags() {
+    public static Set<Tag> createExistingTags() {
         Set<Tag> tags = new HashSet<>();
         tags.add(new Tag(ID, TAG_NAME, null));
+        return tags;
+    }
+
+    public static Set<Tag> createNewTags() {
+        Set<Tag> tags = new HashSet<>();
+        tags.add(new Tag(null, TAG_NAME, null));
         return tags;
     }
 }
