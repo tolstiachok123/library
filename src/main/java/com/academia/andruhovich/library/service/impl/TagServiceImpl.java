@@ -16,27 +16,34 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Set<Tag> handleTags(Set<Tag> tags) {
-        tags.stream()
-                .peek(tag -> tag.setId(null))
-                .peek(tag -> repository.findByName(tag.getName()).ifPresent(value -> tag.setId(value.getId())))
-                .filter(tag -> tag.getId() == null)
-                .forEach(repository::save);
+        tags.forEach(tag -> tag.setId(null));
+        tags.forEach(tag -> repository.findByName(tag.getName()).ifPresent(value -> tag.setId(value.getId())));
+        tags.forEach(tag -> {
+            if (tag.getId() == null) {
+                tag = repository.save(tag);
+            }
+        });
         return tags;
     }
 
     @Override
     public Set<Tag> handleTags(Set<Tag> newTags, Set<Tag> deprecatedTags) {
-        newTags.stream()
-                .peek(newTag -> newTag.setId(null))
-                .peek(newTag -> setDeprecatedTag(newTag, deprecatedTags))
-                .filter(newTag -> newTag.getId() == null)
-                .peek(newTag -> repository.findByName(newTag.getName()).ifPresent(value -> newTag.setId(value.getId())))
-                .filter(newTag -> newTag.getId() == null)
-                .forEach(repository::save);
+        newTags.forEach(newTag -> newTag.setId(null));
+        newTags.forEach(newTag -> setUnchangedTag(newTag, deprecatedTags));
+        newTags.forEach(newTag -> {
+            if (newTag.getId() == null) {
+                repository.findByName(newTag.getName()).ifPresent(value -> newTag.setId(value.getId()));
+            }
+        });
+        newTags.forEach(newTag -> {
+            if (newTag.getId() == null) {
+                newTag = repository.save(newTag);
+            }
+        });
         return newTags;
     }
 
-    private void setDeprecatedTag(Tag newTag, Set<Tag> deprecatedTags) {
+    private void setUnchangedTag(Tag newTag, Set<Tag> deprecatedTags) {
         deprecatedTags.stream()
                 .filter(deprecatedTag -> deprecatedTag.getName().equals(newTag.getName()))
                 .forEach(deprecatedTag -> newTag.setId(deprecatedTag.getId()));

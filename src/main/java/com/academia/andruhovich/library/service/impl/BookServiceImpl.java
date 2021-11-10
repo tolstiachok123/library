@@ -20,51 +20,51 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    private final BookMapper bookMapper;
-    private final BookRepository bookRepository;
+    private final BookMapper mapper;
+    private final BookRepository repository;
     private final AuthorService authorService;
     private final TagService tagService;
 
 
     @Override
     public List<BookDto> getAll() {
-        return bookRepository.findAll().stream()
-                .map(bookMapper::modelToDto)
+        return repository.findAll().stream()
+                .map(mapper::modelToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public BookDto getById(Long id) {
-        return bookMapper.modelToDto(getModelById(id));
+        return mapper.modelToDto(getModelById(id));
     }
 
     @Override
     public void deleteById(Long id) {
         getModelById(id);
-        bookRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Transactional
     @Override
     public BookDto add(BookDto dto) {
-        Book book = bookMapper.dtoToModel(dto);
+        Book book = mapper.dtoToModel(dto);
         book.setAuthor(authorService.getModelById(book.getAuthor().getId()));
         book.setTags(tagService.handleTags(book.getTags()));
-        return bookMapper.modelToDto(bookRepository.save(book));
+        return mapper.modelToDto(repository.save(book));
     }
 
     @Transactional
     @Override
     public void update(Long id, BookDto dto) {
-        Book deprecatedBook = getModelById(id);
-        Book book = bookMapper.dtoToModel(id, dto);
+        Book dbBook = getModelById(id);
+        Book book = mapper.dtoToModel(id, dto);
         book.setAuthor(authorService.getModelById(book.getAuthor().getId()));
-        book.setTags(tagService.handleTags(book.getTags(), deprecatedBook.getTags()));
-        bookRepository.save(book);
+        book.setTags(tagService.handleTags(book.getTags(), dbBook.getTags()));
+        repository.save(book);
     }
 
     private Book getModelById(Long id) {
-        return bookRepository.findById(id).orElseThrow(() ->
+        return repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
     }
 

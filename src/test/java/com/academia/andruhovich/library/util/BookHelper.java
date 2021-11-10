@@ -25,6 +25,18 @@ public class BookHelper {
 		return book;
 	}
 
+	public static Book createNewBook() {
+		Book book = new Book();
+		book.setTitle(TITLE);
+		book.setPrice(PRICE);
+		book.setImageUrl(IMAGE_URL);
+		book.setAuthor(AuthorHelper.createModel());
+		book.setTags(TagHelper.createExistingTags());
+		book.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Minsk")));
+		book.setUpdatedAt(ZonedDateTime.now(ZoneId.of("Europe/Minsk")));
+		return book;
+	}
+
 	public static List<Book> createExistingBooks() {
 		List<Book> books = new ArrayList<>();
 		Book book = new Book();
@@ -53,5 +65,15 @@ public class BookHelper {
 		return dto;
 	}
 
-
+	public static BookDto createNewBookDto() {
+		BookDto dto = new BookDto();
+		dto.setTitle(TITLE);
+		dto.setPrice(PRICE);
+		dto.setImageUrl(IMAGE_URL);
+		dto.setAuthor(AuthorHelper.createResponseDto());
+		dto.setTags(TagHelper.createNewTagDtos());
+		dto.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Minsk")));
+		dto.setUpdatedAt(ZonedDateTime.now(ZoneId.of("Europe/Minsk")));
+		return dto;
+	}
 }
