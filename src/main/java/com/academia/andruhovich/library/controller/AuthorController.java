@@ -33,7 +33,7 @@ public class AuthorController {
 
 	@GetMapping("/{id}")
 	public AuthorDto getAuthor(@PathVariable Long id) {
-		return service.getById(id);
+		return service.getAuthor(id);
 	}
 
 	@DeleteMapping("/{id}")
@@ -48,8 +48,7 @@ public class AuthorController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updateAuthor(@PathVariable Long id, @RequestBody @Valid AuthorDto dto) {
-		service.update(id, dto);
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<AuthorDto> updateAuthor(@PathVariable Long id, @RequestBody @Valid AuthorDto dto) {
+		return ResponseEntity.status(HttpStatus.OK).body(service.update(id, dto));
 	}
 }

@@ -18,7 +18,7 @@
 
     <changeSet author="tolstiachok123" id="2">
         <sql>
-            CREATE TABLE `tag` (
+            CREATE TABLE `tags` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             `name` varchar(255) DEFAULT NULL UNIQUE,
             PRIMARY KEY (`id`)
@@ -44,11 +44,11 @@
 
     <changeSet author="tolstiachok123" id="4">
         <sql>
-            CREATE TABLE `tag_books` (
-            `tag_id` BIGINT NOT NULL,
+            CREATE TABLE `book_tags` (
+            `tags_id` BIGINT NOT NULL,
             `books_id` BIGINT NOT NULL,
             CONSTRAINT `fk_books_id` FOREIGN KEY (`books_id`) REFERENCES `book` (`id`),
-            CONSTRAINT `fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
+            CONSTRAINT `fk_tags_id` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`id`)
             );
         </sql>
     </changeSet>

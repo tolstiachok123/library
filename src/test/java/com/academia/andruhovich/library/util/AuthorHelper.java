@@ -6,13 +6,13 @@ import com.academia.andruhovich.library.model.Author;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.academia.andruhovich.library.util.Constants.FIRST_NAME;
+import static com.academia.andruhovich.library.util.Constants.ID;
+import static com.academia.andruhovich.library.util.Constants.LAST_NAME;
+
 public class AuthorHelper {
 
-	public static final Long ID = 1L;
-	public static final String FIRST_NAME = "Ray";
-	public static final String LAST_NAME = "Bradbury";
-
-	public static Author createModel() {
+	public static Author createExistingAuthor() {
 		Author author = new Author();
 		author.setId(ID);
 		author.setFirstName(FIRST_NAME);
@@ -21,7 +21,7 @@ public class AuthorHelper {
 		return author;
 	}
 
-	public static AuthorDto createRequestDto() {
+	public static AuthorDto createNewAuthorDto() {
 		AuthorDto authorDto = new AuthorDto();
 		authorDto.setId(null);
 		authorDto.setFirstName(FIRST_NAME);
@@ -29,7 +29,7 @@ public class AuthorHelper {
 		return authorDto;
 	}
 
-	public static AuthorDto createResponseDto() {
+	public static AuthorDto createExistingAuthorDto() {
 		AuthorDto authorDto = new AuthorDto();
 		authorDto.setId(ID);
 		authorDto.setFirstName(FIRST_NAME);
@@ -37,7 +37,7 @@ public class AuthorHelper {
 		return authorDto;
 	}
 
-	public static List<Author> createModels() {
+	public static List<Author> createExistingAuthors() {
 		List<Author> authors = new ArrayList<>();
 		authors.add(new Author(ID, FIRST_NAME, LAST_NAME, null));
 		return authors;
