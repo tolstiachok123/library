@@ -29,13 +29,13 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public AuthorDto getById(Long id) {
-        return mapper.modelToDto(getModelById(id));
+    public AuthorDto getAuthor(Long id) {
+        return mapper.modelToDto(getById(id));
     }
 
 	@Override
 	public void deleteById(Long id) {
-        getModelById(id);
+        getById(id);
         repository.deleteById(id);
     }
 
@@ -48,14 +48,15 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public void update(Long id, AuthorDto dto) {
-        getModelById(id);
-        repository.save(mapper.dtoToModel(id, dto));
+    public AuthorDto update(Long id, AuthorDto dto) {
+        Author author = getById(id);
+        author = repository.save(mapper.updateEntityFromDto(dto, author));
+        return mapper.modelToDto(author);
     }
 
 
     @Override
-    public Author getModelById(Long id) {
+    public Author getById(Long id) {
         return repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
     }

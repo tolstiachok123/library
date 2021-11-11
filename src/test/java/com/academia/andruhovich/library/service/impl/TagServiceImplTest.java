@@ -1,5 +1,6 @@
 package com.academia.andruhovich.library.service.impl;
 
+import com.academia.andruhovich.library.dto.TagDto;
 import com.academia.andruhovich.library.model.Tag;
 import com.academia.andruhovich.library.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +12,7 @@ import java.util.Set;
 
 
 import static com.academia.andruhovich.library.util.TagHelper.createExistingTag;
-import static com.academia.andruhovich.library.util.TagHelper.createExistingTags;
-import static com.academia.andruhovich.library.util.TagHelper.createNewTags;
+import static com.academia.andruhovich.library.util.TagHelper.createNewTagDtos;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -24,16 +24,13 @@ class TagServiceImplTest {
     @Mock
     private TagRepository repository;
 
-    private final Set<Tag> databaseTagSet = createExistingTags();
     private final Tag existingTag = createExistingTag();
-
-    private Set<Tag> newTags;
+    private final Set<TagDto> newTagDtos = createNewTagDtos();
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         service = new TagServiceImpl(repository);
-        this.newTags = createNewTags();
     }
 
     @Test
@@ -42,20 +39,9 @@ class TagServiceImplTest {
         when(repository.findByName(any())).thenReturn(java.util.Optional.of(existingTag));
         when(repository.save(any())).thenReturn(existingTag);
         //when
-        newTags = service.handleTags(newTags);
+        Set<Tag> tags = service.updateOrCreateTags(newTagDtos);
         //then
-        newTags.forEach(tag -> assertNotNull(tag.getId()));
-    }
-
-    @Test
-    void getByName() {
-        //given
-        when(repository.findByName(any())).thenReturn(java.util.Optional.of(existingTag));
-        when(repository.save(any())).thenReturn(existingTag);
-        //when
-        newTags = service.handleTags(newTags, databaseTagSet);
-        //then
-        newTags.forEach(tag -> assertNotNull(tag.getId()));
+        tags.forEach(tag -> assertNotNull(tag.getId()));
     }
 
 }

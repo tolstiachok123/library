@@ -14,6 +14,6 @@ public interface BookService {
 
     BookDto add(BookDto dto);
 
-    void update(Long id, BookDto dto);
+    BookDto update(Long id, BookDto dto);
 
 }

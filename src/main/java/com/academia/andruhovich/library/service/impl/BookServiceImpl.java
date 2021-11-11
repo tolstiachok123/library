@@ -38,6 +38,7 @@ public class BookServiceImpl implements BookService {
         return mapper.modelToDto(getModelById(id));
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         getModelById(id);
@@ -48,19 +49,19 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto add(BookDto dto) {
         Book book = mapper.dtoToModel(dto);
-        book.setAuthor(authorService.getModelById(book.getAuthor().getId()));
-        book.setTags(tagService.handleTags(book.getTags()));
+        book.setAuthor(authorService.getById(book.getAuthor().getId())); //@named
+        book.setTags(tagService.updateOrCreateTags(dto.getTags()));
         return mapper.modelToDto(repository.save(book));
     }
 
     @Transactional
     @Override
-    public void update(Long id, BookDto dto) {
-        Book dbBook = getModelById(id);
-        Book book = mapper.dtoToModel(id, dto);
-        book.setAuthor(authorService.getModelById(book.getAuthor().getId()));
-        book.setTags(tagService.handleTags(book.getTags(), dbBook.getTags()));
-        repository.save(book);
+    public BookDto update(Long id, BookDto dto) {
+        Book book = getModelById(id);
+        book = mapper.updateEntityFromDto(dto, book);
+        book.setAuthor(authorService.getById(book.getAuthor().getId()));
+        book.setTags(tagService.updateOrCreateTags(dto.getTags()));
+        return mapper.modelToDto(repository.save(book));
     }
 
     private Book getModelById(Long id) {

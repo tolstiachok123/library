@@ -31,4 +31,7 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private List<Book> books = new ArrayList<>();
 
+    public Tag(String name) {
+        this.name = name;
+    }
 }

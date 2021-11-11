@@ -9,13 +9,13 @@ public interface AuthorService {
 
     List<AuthorDto> getAll();
 
-    AuthorDto getById(Long id);
+    AuthorDto getAuthor(Long id);
 
     void deleteById(Long id);
 
     AuthorDto add(AuthorDto dto);
 
-    void update(Long id, AuthorDto dto);
+    AuthorDto update(Long id, AuthorDto dto);
 
-    Author getModelById(Long id);
+    Author getById(Long id);
 }

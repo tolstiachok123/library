@@ -2,7 +2,6 @@ package com.academia.andruhovich.library.controller;
 
 import com.academia.andruhovich.library.dto.AuthorDto;
 import com.academia.andruhovich.library.service.AuthorService;
-import com.academia.andruhovich.library.util.AuthorHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static com.academia.andruhovich.library.util.AuthorHelper.createNewAuthorDto;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class AuthorControllerTest {
 
-	private final AuthorDto dto = AuthorHelper.createRequestDto();
+	private final AuthorDto newAuthorDto = createNewAuthorDto();
 
 	@Autowired
 	AuthorService service;
@@ -71,7 +71,7 @@ public class AuthorControllerTest {
 	void createAuthor() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders
 				.post("/api/authors")
-				.content(convertToJsonString(dto))
+				.content(convertToJsonString(newAuthorDto))
 				.contentType(APPLICATION_JSON)
 				.accept(APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -84,10 +84,11 @@ public class AuthorControllerTest {
 	void updateAuthor() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders
 				.put("/api/authors/{id}", 1)
-				.content(convertToJsonString(dto))
+				.content(convertToJsonString(newAuthorDto))
 				.contentType(APPLICATION_JSON)
 				.accept(APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
 	}
 
 	public static String convertToJsonString(final Object obj) {

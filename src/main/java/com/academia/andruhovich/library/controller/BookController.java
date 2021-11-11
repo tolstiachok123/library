@@ -48,9 +48,8 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBook(@PathVariable Long id, @RequestBody @Valid BookDto dto) {
-        service.update(id, dto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody @Valid BookDto dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, dto));
     }
 
 }

@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.academia.andruhovich.library.util.AuthorHelper.createModel;
-import static com.academia.andruhovich.library.util.BookHelper.createBookDto;
+import static com.academia.andruhovich.library.util.AuthorHelper.createExistingAuthor;
 import static com.academia.andruhovich.library.util.BookHelper.createExistingBook;
+import static com.academia.andruhovich.library.util.BookHelper.createExistingBookDto;
 import static com.academia.andruhovich.library.util.BookHelper.createExistingBooks;
 import static com.academia.andruhovich.library.util.BookHelper.createNewBook;
 import static com.academia.andruhovich.library.util.BookHelper.createNewBookDto;
@@ -44,13 +44,13 @@ class BookServiceImplTest {
     @Mock
     private TagService tagService;
 
-    private final List<Book> books = createExistingBooks();
-    private final Book book = createExistingBook();
+    private final List<Book> existingBooks = createExistingBooks();
+    private final Book existingBook = createExistingBook();
     private final Book newBook = createNewBook();
-    private final BookDto responseDto = createBookDto();
-    private final BookDto requestDto = createNewBookDto();
-    private final Author author = createModel();
-    private final Set<Tag> tags = createExistingTags();
+    private final BookDto existingBookDto = createExistingBookDto();
+    private final BookDto newBookDto = createNewBookDto();
+    private final Author existingAuthor = createExistingAuthor();
+    private final Set<Tag> existingTags = createExistingTags();
 
     @BeforeEach
     void setUp() {
@@ -61,46 +61,46 @@ class BookServiceImplTest {
     @Test
     void getAll() {
         //given
-        when(repository.findAll()).thenReturn(books);
-        when(mapper.modelToDto(any())).thenReturn(responseDto);
+        when(repository.findAll()).thenReturn(existingBooks);
+        when(mapper.modelToDto(any())).thenReturn(existingBookDto);
         //when
         List<BookDto> books = service.getAll();
         //then
         assertNotNull(books);
-        assertEquals(books.get(0), responseDto);
+        assertEquals(books.get(0), existingBookDto);
     }
 
     @Test
     void getById() {
         //given
-        when(repository.findById(any())).thenReturn(Optional.of(book));
-        when(mapper.modelToDto(any())).thenReturn(responseDto);
+        when(repository.findById(any())).thenReturn(Optional.of(existingBook));
+        when(mapper.modelToDto(any())).thenReturn(existingBookDto);
         //when
-        BookDto bookDto = service.getById(book.getId());
+        BookDto bookDto = service.getById(existingBook.getId());
         //then
-        assertEquals(bookDto.getId(), book.getId());
+        assertEquals(bookDto.getId(), existingBook.getId());
     }
 
     @Test
     void deleteById() {
         //given
-        when(repository.findById(any())).thenReturn(Optional.of(book));
+        when(repository.findById(any())).thenReturn(Optional.of(existingBook));
         //when
-        service.deleteById(book.getId());
+        service.deleteById(existingBook.getId());
         //then
-        verify(repository).deleteById(book.getId());
+        verify(repository).deleteById(existingBook.getId());
     }
 
     @Test
     void add() {
         //given
         when(mapper.dtoToModel(any())).thenReturn(newBook);
-        when(repository.save(any())).thenReturn(book);
-        when(authorService.getModelById(any())).thenReturn(author);
-        when(tagService.handleTags(any())).thenReturn(tags);
-        when(mapper.modelToDto(any())).thenReturn(responseDto);
+        when(repository.save(any())).thenReturn(existingBook);
+        when(authorService.getById(any())).thenReturn(existingAuthor);
+        when(tagService.updateOrCreateTags(any())).thenReturn(existingTags);
+        when(mapper.modelToDto(any())).thenReturn(existingBookDto);
         //when
-        BookDto bookDto = service.add(requestDto);
+        BookDto bookDto = service.add(newBookDto);
         System.out.println(bookDto.toString());
         //then
         assertNotNull(bookDto.getId());
@@ -109,13 +109,13 @@ class BookServiceImplTest {
     @Test
     void update() {
         //given
-        when(repository.findById(any())).thenReturn(Optional.of(book));
-        when(mapper.dtoToModel(any(), any())).thenReturn(book);
-        when(authorService.getModelById(any())).thenReturn(author);
-        when(tagService.handleTags(any())).thenReturn(tags);
-        when(repository.save(any())).thenReturn(book);
+        when(repository.findById(any())).thenReturn(Optional.of(existingBook));
+        when(mapper.updateEntityFromDto(any(), any())).thenReturn(existingBook);
+        when(authorService.getById(any())).thenReturn(existingAuthor);
+        when(tagService.updateOrCreateTags(any())).thenReturn(existingTags);
+        when(repository.save(any())).thenReturn(existingBook);
         //when
-        service.update(book.getId(), requestDto);
+        service.update(existingBook.getId(), newBookDto);
         //then
         verify(repository).save(any());
     }

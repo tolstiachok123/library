@@ -24,12 +24,6 @@ public class TagHelper {
         return tags;
     }
 
-    public static Set<Tag> createNewTags() {
-        Set<Tag> tags = new HashSet<>();
-        tags.add(new Tag(null, TAG_NAME, null));
-        return tags;
-    }
-
     public static Set<TagDto> createNewTagDtos() {
         Set<TagDto> tagDtos = new HashSet<>();
         tagDtos.add(new TagDto(null, TAG_NAME));

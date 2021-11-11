@@ -20,71 +20,71 @@ import static org.mockito.Mockito.*;
 
 class AuthorServiceImplTest {
 
-	private AuthorServiceImpl service;
+    private AuthorServiceImpl service;
 
-	@Mock
-	private AuthorMapper mapper;
+    @Mock
+    private AuthorMapper mapper;
 
-	@Mock
-	private AuthorRepository repository;
+    @Mock
+    private AuthorRepository repository;
 
-	private final List<Author> authors = createModels();
-	private final AuthorDto authorRequestDto = createRequestDto();
-	private final AuthorDto authorResponseDto = createResponseDto();
-	private final Author author = createModel();
+    private final List<Author> authors = createExistingAuthors();
+    private final AuthorDto newAuthorDto = createNewAuthorDto();
+    private final AuthorDto existingAuthorDto = createExistingAuthorDto();
+    private final Author author = createExistingAuthor();
 
-	@BeforeEach
-	void setUp() {
-		MockitoAnnotations.openMocks(this);
-		service = new AuthorServiceImpl(mapper, repository);
-	}
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        service = new AuthorServiceImpl(mapper, repository);
+    }
 
-	@Test
-	void getAll() {
-		//given
-		when(repository.findAll()).thenReturn(authors);
-		when(mapper.modelToDto(any())).thenReturn(authorResponseDto);
-		//when
-		List<AuthorDto> authors = service.getAll();
-		//then
-		assertNotNull(authors);
-		assertEquals(authors.get(0), authorResponseDto);
-	}
+    @Test
+    void getAll() {
+        //given
+        when(repository.findAll()).thenReturn(authors);
+        when(mapper.modelToDto(any())).thenReturn(existingAuthorDto);
+        //when
+        List<AuthorDto> authors = service.getAll();
+        //then
+        assertNotNull(authors);
+        assertEquals(authors.get(0), existingAuthorDto);
+    }
 
-	@Test
-	void getById() {
-		//given
-		when(repository.findById(any())).thenReturn(Optional.of(author));
-		when(mapper.modelToDto(any())).thenReturn(authorResponseDto);
-		//when
-		AuthorDto dto = service.getById(author.getId());
-		//then
-		assertEquals(dto.getFirstName(), author.getFirstName());
-	}
+    @Test
+    void getById() {
+        //given
+        when(repository.findById(any())).thenReturn(Optional.of(author));
+        when(mapper.modelToDto(any())).thenReturn(existingAuthorDto);
+        //when
+        AuthorDto dto = service.getAuthor(author.getId());
+        //then
+        assertEquals(dto.getFirstName(), author.getFirstName());
+    }
 
-	@Test
-	void add() {
-		//given
-		when(mapper.dtoToModel(any())).thenReturn(author);
-		when(repository.save(any())).thenReturn(author);
-		when(mapper.modelToDto(any())).thenReturn(authorResponseDto);
-		//when
-		AuthorDto dto = service.add(authorRequestDto);
-		//then
-		assertNotNull(dto.getId());
-	}
+    @Test
+    void add() {
+        //given
+        when(mapper.dtoToModel(any())).thenReturn(author);
+        when(repository.save(any())).thenReturn(author);
+        when(mapper.modelToDto(any())).thenReturn(existingAuthorDto);
+        //when
+        AuthorDto dto = service.add(newAuthorDto);
+        //then
+        assertNotNull(dto.getId());
+    }
 
 	@Test
 	void update() {
-		//given
-		when(repository.findById(any())).thenReturn(Optional.of(author));
-		when(mapper.dtoToModel(any())).thenReturn(author);
-		when(repository.save(any())).thenReturn(author);
-		//when
-		service.update(author.getId(), authorRequestDto);
-		//then
-		verify(repository).save(any());
-	}
+        //given
+        when(repository.findById(any())).thenReturn(Optional.of(author));
+        when(mapper.dtoToModel(any())).thenReturn(author);
+        when(repository.save(any())).thenReturn(author);
+        //when
+        service.update(author.getId(), newAuthorDto);
+        //then
+        verify(repository).save(any());
+    }
 
 	@Test
 	void deleteById() {
