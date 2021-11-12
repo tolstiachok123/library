@@ -53,4 +53,61 @@
         </sql>
     </changeSet>
 
+    <changeSet author="tolstiachok123" id="5">
+        <sql>
+            CREATE TABLE `authority` (
+            `id` BIGINT NOT NULL AUTO_INCREMENT,
+            `name` varchar(255) DEFAULT NULL UNIQUE,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="6">
+        <sql>
+            CREATE TABLE `role` (
+            `id` BIGINT NOT NULL AUTO_INCREMENT,
+            `name` varchar(255) DEFAULT NULL UNIQUE,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="7">
+        <sql>
+            CREATE TABLE `role_authority` (
+            `role_id` BIGINT NOT NULL,
+            `authority_id` BIGINT NOT NULL,
+            CONSTRAINT `fk_role_id1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
+            CONSTRAINT `fk_authority_id` FOREIGN KEY (`authority_id`) REFERENCES `authority` (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="8">
+        <sql>
+            CREATE TABLE `user` (
+            `id` BIGINT NOT NULL AUTO_INCREMENT,
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `email` varchar(255) DEFAULT NULL,
+            `first_name` varchar(255) DEFAULT NULL,
+            `last_name` varchar(255) DEFAULT NULL,
+            `password` varchar(255) DEFAULT NULL,
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet author="tolstiachok123" id="9">
+        <sql>
+            CREATE TABLE `user_role` (
+            `user_id` BIGINT NOT NULL,
+            `role_id` BIGINT NOT NULL,
+            CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+            CONSTRAINT `fk_role_id2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+            );
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
