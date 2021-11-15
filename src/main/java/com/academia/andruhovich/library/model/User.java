@@ -29,10 +29,6 @@ public class User {
 	@Column(name = "email")
 	private String email;
 
-//	@Column(name = "role")
-//	@Enumerated(EnumType.STRING)
-//	private Role role;
-
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")},
 			inverseJoinColumns = {@JoinColumn(name = "role_id")})
@@ -46,4 +42,11 @@ public class User {
 
 	//	@LastModifiedDate
 	private ZonedDateTime updatedAt;
+
+	public User(Long id, String email, Set<Role> roles, String password) {
+		this.id = id;
+		this.email = email;
+		this.roles = roles;
+		this.password = password;
+	}
 }
