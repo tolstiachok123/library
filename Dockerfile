@@ -6,6 +6,6 @@ ENV JAVA_OPTS=""
 
 WORKDIR /app
 
-COPY /build/libs/library-0.0.1-SNAPSHOT.jar .
+COPY /build/libs/library.jar .
 
-CMD java ${JAVA_OPTS} -jar library-0.0.1-SNAPSHOT.jar
+CMD java ${JAVA_OPTS} -jar library.jar
