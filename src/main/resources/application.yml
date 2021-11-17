@@ -20,3 +20,7 @@ spring:
     enabled: true
     change-log: db/changelog/changelog-master.xml
 
+jwt:
+  token:
+    secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:JudgeNotAndYouWillNotBeJudged}"'
+    expired: 3600000
