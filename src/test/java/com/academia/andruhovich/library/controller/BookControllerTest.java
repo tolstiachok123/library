@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -34,6 +35,7 @@ class BookControllerTest {
     private MockMvc mockMvc;
 
 
+    @WithMockUser(username = "admin_mock", roles = "ADMIN", password = "12356")
     @Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertBook.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertTag.sql", executionPhase = BEFORE_TEST_METHOD)
@@ -53,6 +55,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").isNotEmpty());
     }
 
+    @WithMockUser(username = "admin_mock", roles = "ADMIN", password = "12356")
     @Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertBook.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertTag.sql", executionPhase = BEFORE_TEST_METHOD)
@@ -71,6 +74,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
     }
 
+    @WithMockUser(username = "admin_mock", roles = "ADMIN", password = "12356")
     @Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertBook.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertTag.sql", executionPhase = BEFORE_TEST_METHOD)
@@ -85,6 +89,7 @@ class BookControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @WithMockUser(username = "admin_mock", roles = "ADMIN", password = "12356")
     @Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertBook.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertTag.sql", executionPhase = BEFORE_TEST_METHOD)
@@ -104,6 +109,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
     }
 
+    @WithMockUser(username = "admin_mock", roles = "ADMIN", password = "12356")
     @Sql(value = "classpath:/sql/insertAuthor.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertBook.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(value = "classpath:/sql/insertTag.sql", executionPhase = BEFORE_TEST_METHOD)
