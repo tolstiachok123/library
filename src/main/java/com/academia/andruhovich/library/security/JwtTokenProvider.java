@@ -6,6 +6,8 @@ import com.academia.andruhovich.library.model.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,9 @@ import java.util.*;
 
 @Component
 public class JwtTokenProvider {
+
+    private static final String BEARER = "Bearer ";
+    private static final String JWT_REGEXP = "Bearer\\s[\\w-]*\\.[\\w-]*\\.[\\w-]*";
 
     @Value("${jwt.token.secret}")
     private String secretKey;
@@ -52,30 +57,35 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (bearerToken == null) {
+            return null;
         }
-        return null;
+
+        if (!bearerToken.matches(JWT_REGEXP)) {
+            throw new BadCredentialsException(String.format("JWT token is not matching: '%s'", JWT_REGEXP));
+        }
+
+        return bearerToken.startsWith(BEARER) ? bearerToken.substring(7) : null;
     }
 
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-
-            return true;
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw e;
+            throw new BadCredentialsException("JWT token is expired or invalid.");
         }
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = service.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        try {
+            UserDetails userDetails = service.loadUserByUsername(getUsername(token));
+            return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        } catch (Exception e) {
+            throw new BadCredentialsException("JWT token invalid.");
+        }
     }
 
     public String getUsername(String token) {
