@@ -4,6 +4,7 @@ import com.academia.andruhovich.library.exception.error.FieldValidationError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +20,18 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<Void> handle(Throwable throwable) {
 		log.error("Caught unhandled exception: {}", throwable.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<?> handle(AccessDeniedException ex) {
+		log.error("Caught AccessDeniedException: {}", ex.getMessage());
+		ExceptionDto exceptionDto = ExceptionDto.builder()
+				.status(HttpStatus.FORBIDDEN.value())
+				.error(HttpStatus.FORBIDDEN.getReasonPhrase())
+				.message(ex.getMessage())
+				.time(ZonedDateTime.now())
+				.build();
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionDto);
 	}
 
 	@ExceptionHandler(value = ResourceNotFoundException.class)

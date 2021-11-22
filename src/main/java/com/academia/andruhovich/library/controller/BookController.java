@@ -5,6 +5,7 @@ import com.academia.andruhovich.library.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,22 +33,26 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('read')")
     public BookDto getBook(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete')")
     public ResponseEntity<Long> deleteBook(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BookDto> createBook(@RequestBody @Valid BookDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.add(dto));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody @Valid BookDto dto) {
         return ResponseEntity.status(HttpStatus.OK).body(service.update(id, dto));
     }

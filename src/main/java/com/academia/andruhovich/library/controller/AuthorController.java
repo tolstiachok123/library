@@ -5,6 +5,7 @@ import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,22 +33,26 @@ public class AuthorController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('read')")
 	public AuthorDto getAuthor(@PathVariable Long id) {
 		return service.getAuthor(id);
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('delete')")
 	public ResponseEntity<Long> deleteAuthor(@PathVariable Long id) {
 		service.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('write')")
 	public ResponseEntity<AuthorDto> createAuthor(@RequestBody @Valid AuthorDto dto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.add(dto));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('write')")
 	public ResponseEntity<AuthorDto> updateAuthor(@PathVariable Long id, @RequestBody @Valid AuthorDto dto) {
 		return ResponseEntity.status(HttpStatus.OK).body(service.update(id, dto));
 	}
