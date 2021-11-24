@@ -2,7 +2,6 @@ package com.academia.andruhovich.library.exception;
 
 import com.academia.andruhovich.library.exception.error.FieldValidationError;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -12,6 +11,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.ZonedDateTime;
 
+import static com.academia.andruhovich.library.exception.ErrorMessages.INVALID_METHOD_ARGUMENT;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,31 +25,43 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = Throwable.class)
 	public ResponseEntity<Void> handle(Throwable throwable) {
 		log.error("Caught unhandled exception: {}", throwable.getMessage());
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
 	}
 
-	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<?> handle(AccessDeniedException ex) {
-		log.error("Caught AccessDeniedException: {}", ex.getMessage());
+	@ExceptionHandler(value = BusyEmailException.class)
+	public ResponseEntity<?> handle(BusyEmailException ex) {
+		log.error("Caught BusyEmailException: {}", ex.getMessage());
 		ExceptionDto exceptionDto = ExceptionDto.builder()
-				.status(HttpStatus.FORBIDDEN.value())
-				.error(HttpStatus.FORBIDDEN.getReasonPhrase())
+				.status(BAD_REQUEST.value())
+				.error(BAD_REQUEST.getReasonPhrase())
 				.message(ex.getMessage())
 				.time(ZonedDateTime.now())
 				.build();
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionDto);
+		return ResponseEntity.status(BAD_REQUEST).body(exceptionDto);
+	}
+
+	@ExceptionHandler(value = AccessDeniedException.class)
+	public ResponseEntity<?> handle(AccessDeniedException ex) {
+		log.error("Caught AccessDeniedException: {}", ex.getMessage());
+		ExceptionDto exceptionDto = ExceptionDto.builder()
+				.status(FORBIDDEN.value())
+				.error(FORBIDDEN.getReasonPhrase())
+				.message(ex.getMessage())
+				.time(ZonedDateTime.now())
+				.build();
+		return ResponseEntity.status(FORBIDDEN).body(exceptionDto);
 	}
 
 	@ExceptionHandler(value = ResourceNotFoundException.class)
 	public ResponseEntity<?> handle(ResourceNotFoundException exception) {
 		log.error("Caught ResourceNotFoundException: {}", exception.getMessage());
 		ExceptionDto exceptionDto = ExceptionDto.builder()
-				.status(HttpStatus.NOT_FOUND.value())
-				.error(HttpStatus.NOT_FOUND.getReasonPhrase())
+				.status(NOT_FOUND.value())
+				.error(NOT_FOUND.getReasonPhrase())
 				.message(exception.getMessage())
 				.time(ZonedDateTime.now())
 				.build();
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionDto);
+		return ResponseEntity.status(NOT_FOUND).body(exceptionDto);
 	}
 
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -51,8 +69,8 @@ public class GlobalExceptionHandler {
 		log.error("Caught MethodArgumentNotValidException: {}", exception.getMessage());
 		BindingResult result = exception.getBindingResult();
 		final FieldValidationError error = FieldValidationError.builder()
-				.status(HttpStatus.UNPROCESSABLE_ENTITY)
-				.message(ErrorMessages.INVALID_METHOD_ARGUMENT)
+				.status(UNPROCESSABLE_ENTITY)
+				.message(INVALID_METHOD_ARGUMENT)
 				.build();
 		result.getFieldErrors().forEach(fieldError -> error
 				.addFieldError(fieldError.getObjectName(),

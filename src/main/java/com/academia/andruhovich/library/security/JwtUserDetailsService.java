@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static com.academia.andruhovich.library.exception.ErrorMessages.USER_NOT_FOUND;
+
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -20,10 +22,10 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = repository.getByEmail(username)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND, email)));
 
         return new CustomPrincipal(
                 user.getId(),

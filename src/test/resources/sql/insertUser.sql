@@ -1,0 +1,1 @@
+INSERT INTO user (id, email, password) values (NULL, 'admin_mock', '12356');

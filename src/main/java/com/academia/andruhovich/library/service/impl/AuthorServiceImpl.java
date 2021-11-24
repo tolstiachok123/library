@@ -1,7 +1,6 @@
 package com.academia.andruhovich.library.service.impl;
 
 import com.academia.andruhovich.library.dto.AuthorDto;
-import com.academia.andruhovich.library.exception.ErrorMessages;
 import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.mapper.AuthorMapper;
 import com.academia.andruhovich.library.model.Author;
@@ -14,15 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.academia.andruhovich.library.exception.ErrorMessages.RESOURCE_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-	private final AuthorMapper mapper;
-	private final AuthorRepository repository;
+    private final AuthorMapper mapper;
+    private final AuthorRepository repository;
 
-	@Override
-	public List<AuthorDto> getAll() {
+    @Override
+    public List<AuthorDto> getAll() {
 		return repository.findAll().stream()
 				.map(mapper::modelToDto)
 				.collect(Collectors.toList());
@@ -58,6 +59,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getById(Long id) {
         return repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
+                new ResourceNotFoundException(String.format(RESOURCE_NOT_FOUND, id)));
     }
 }

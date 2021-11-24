@@ -19,6 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_DELETE;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
+
 @Validated
 @RestController
 @RequestMapping("/api/authors")
@@ -33,27 +40,27 @@ public class AuthorController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAuthority('read')")
+	@PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
 	public AuthorDto getAuthor(@PathVariable Long id) {
 		return service.getAuthor(id);
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAuthority('delete')")
+	@PreAuthorize("hasAuthority('" + AUTHORITY_DELETE + "')")
 	public ResponseEntity<Long> deleteAuthor(@PathVariable Long id) {
 		service.deleteById(id);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(NO_CONTENT).build();
 	}
 
 	@PostMapping
-	@PreAuthorize("hasAuthority('write')")
+	@PreAuthorize("hasAuthority('" + AUTHORITY_WRITE + "')")
 	public ResponseEntity<AuthorDto> createAuthor(@RequestBody @Valid AuthorDto dto) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.add(dto));
+		return ResponseEntity.status(CREATED).body(service.add(dto));
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('write')")
+	@PreAuthorize("hasAuthority('" + AUTHORITY_WRITE + "')")
 	public ResponseEntity<AuthorDto> updateAuthor(@PathVariable Long id, @RequestBody @Valid AuthorDto dto) {
-		return ResponseEntity.status(HttpStatus.OK).body(service.update(id, dto));
+		return ResponseEntity.status(OK).body(service.update(id, dto));
 	}
 }

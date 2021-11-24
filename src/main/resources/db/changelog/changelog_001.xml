@@ -28,7 +28,7 @@
 
     <changeSet author="tolstiachok123" id="3">
         <sql>
-            CREATE TABLE book (
+            CREATE TABLE `book` (
             id BIGINT NOT NULL AUTO_INCREMENT,
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             image_url varchar(255) DEFAULT NULL,
@@ -89,7 +89,7 @@
             CREATE TABLE `user` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `email` varchar(255) DEFAULT NULL,
+            `email` varchar(255) DEFAULT NULL UNIQUE,
             `first_name` varchar(255) DEFAULT NULL,
             `last_name` varchar(255) DEFAULT NULL,
             `password` varchar(255) DEFAULT NULL,
