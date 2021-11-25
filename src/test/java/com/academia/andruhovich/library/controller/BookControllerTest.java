@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_DELETE;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_EDIT;
 import static com.academia.andruhovich.library.util.BookHelper.createNewBookDto;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -101,7 +102,7 @@ public class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
     }
 
-    @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_WRITE, password = "12356")
+    @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_EDIT, password = "12356")
     @Test
     void updateBook() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders

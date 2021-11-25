@@ -1,1 +1,1 @@
-INSERT INTO role_authority (role_id, authority_id) VALUES (1, 1), (1, 2), (1, 3);
+INSERT INTO role_authority (role_id, authority_id) VALUES (1, 1), (1, 2), (1, 3), (1, 4);

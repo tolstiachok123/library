@@ -22,6 +22,7 @@ import java.util.List;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_DELETE;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_EDIT;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
@@ -59,7 +60,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('" + AUTHORITY_WRITE + "')")
+    @PreAuthorize("hasAuthority('" + AUTHORITY_EDIT + "')")
     public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody @Valid BookDto dto) {
         return ResponseEntity.status(OK).body(service.update(id, dto));
     }
