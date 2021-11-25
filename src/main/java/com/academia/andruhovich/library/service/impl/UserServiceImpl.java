@@ -2,7 +2,6 @@ package com.academia.andruhovich.library.service.impl;
 
 import com.academia.andruhovich.library.dto.UserDto;
 import com.academia.andruhovich.library.exception.BusyEmailException;
-import com.academia.andruhovich.library.exception.ErrorMessages;
 import com.academia.andruhovich.library.mapper.UserMapper;
 import com.academia.andruhovich.library.model.Role;
 import com.academia.andruhovich.library.model.User;
@@ -14,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.Set;
 
 import static com.academia.andruhovich.library.exception.ErrorMessages.BUSY_EMAIL;
 
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role role = roleRepository.getByName(DEFAULT_ROLE).get();
-        user.setRoles(Collections.singleton(role));
+        user.setRoles(Set.of(role));
 
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BusyEmailException(String.format(BUSY_EMAIL, user.getEmail()));

@@ -17,13 +17,11 @@ public class AuthorHelper {
 		author.setId(ID);
 		author.setFirstName(FIRST_NAME);
 		author.setLastName(LAST_NAME);
-		author.setBooks(null);
 		return author;
 	}
 
 	public static AuthorDto createNewAuthorDto() {
 		AuthorDto authorDto = new AuthorDto();
-		authorDto.setId(null);
 		authorDto.setFirstName(FIRST_NAME);
 		authorDto.setLastName(LAST_NAME);
 		return authorDto;

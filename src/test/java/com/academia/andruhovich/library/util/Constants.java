@@ -6,13 +6,22 @@ public class Constants {
 
     public static final Long ID = 1L;
 
+    public static final String MINSK = "Europe/Minsk";
+
     public static final String FIRST_NAME = "Ray";
     public static final String LAST_NAME = "Bradbury";
 
     public static final String TAG_NAME = "Horror";
 
+    public static final String DEFAULT_ROLE_NAME = "USER";
+
     public static final String TITLE = "The Whisperer in Darkness";
     public static final BigDecimal PRICE = new BigDecimal("40.00");
     public static final String IMAGE_URL = "www.google.by";
+
+    public static final String EMAIL = "admin_mock";
+    public static final String UNREGISTERED_EMAIL = "new_user";
+    public static final String PASSWORD = "12356";
+    public static final String ENCRYPTED_PASSWORD = "$2y$12$Ol2wWiJjCsY.u3C7H8u3I.xB9FWRZdRF/qppePPnT75rWKQGSIRbq";
 
 }
