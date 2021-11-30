@@ -7,8 +7,11 @@ import com.academia.andruhovich.library.model.Author;
 import com.academia.andruhovich.library.repository.AuthorRepository;
 import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,5 +63,16 @@ public class AuthorServiceImpl implements AuthorService {
     public Author getById(Long id) {
         return repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(RESOURCE_NOT_FOUND, id)));
+    }
+
+    @Override
+    public Page<AuthorDto> getPageableAuthors(String query, Pageable pageable) {
+        Page<Author> page;
+        if (StringUtils.hasLength(query)) {
+            page = repository.findAllByLastNameContainingIgnoreCase(query, pageable);
+        } else {
+            page = repository.findAll(pageable);
+        }
+        return page.map(mapper::modelToDto);
     }
 }

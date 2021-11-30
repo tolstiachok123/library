@@ -10,8 +10,11 @@ import com.academia.andruhovich.library.service.AuthorService;
 import com.academia.andruhovich.library.service.BookService;
 import com.academia.andruhovich.library.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +65,17 @@ public class BookServiceImpl implements BookService {
         book.setAuthor(authorService.getById(book.getAuthor().getId()));
         book.setTags(tagService.updateOrCreateTags(dto.getTags()));
         return mapper.modelToDto(repository.save(book));
+    }
+
+    @Override
+    public Page<BookDto> getPageableBooks(String query, Pageable pageable) {
+        Page<Book> page;
+        if (StringUtils.hasLength(query)) {
+            page = repository.findAllByTitleContainingIgnoreCase(query, pageable);
+        } else {
+            page = repository.findAll(pageable);
+        }
+        return page.map(mapper::modelToDto);
     }
 
     private Book getModelById(Long id) {

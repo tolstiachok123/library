@@ -3,21 +3,16 @@ package com.academia.andruhovich.library.controller;
 import com.academia.andruhovich.library.dto.BookDto;
 import com.academia.andruhovich.library.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_DELETE;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
@@ -35,15 +30,18 @@ public class BookController {
 
     private final BookService service;
 
-    @GetMapping
-    public List<BookDto> getBooks() {
-        return service.getAll();
-    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
     public BookDto getBook(@PathVariable Long id) {
         return service.getById(id);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
+    public Page<BookDto> getPageableBooks(@RequestParam(required = false) String query,
+                                          @PageableDefault Pageable pageable) {  //default page=0, size=10
+        return service.getPageableBooks(query, pageable);
     }
 
     @DeleteMapping("/{id}")
