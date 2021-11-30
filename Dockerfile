@@ -1,4 +1,4 @@
-FROM gradle:7.3.0-jdk11-alpine
+FROM openjdk:11-jdk-slim
 
 LABEL author = "Sergey Andruhovich sergeyandruhovich1998@solbeg.com"
 

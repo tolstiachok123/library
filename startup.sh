@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #start db and backend
-docker-compose up
+docker-compose up -d

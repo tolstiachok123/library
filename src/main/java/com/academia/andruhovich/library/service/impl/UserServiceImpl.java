@@ -32,14 +32,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto add(UserDto dto) {
         User user = mapper.dtoToModel(dto);
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new BusyEmailException(String.format(BUSY_EMAIL, user.getEmail()));
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role role = roleRepository.getByName(DEFAULT_ROLE).get();
         user.setRoles(Set.of(role));
-
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new BusyEmailException(String.format(BUSY_EMAIL, user.getEmail()));
-        }
 
         return mapper.modelToDto(userRepository.save(user));
     }
