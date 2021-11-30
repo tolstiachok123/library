@@ -1,0 +1,2 @@
+DELETE FROM authority;
+ALTER TABLE authority ALTER COLUMN id RESTART WITH 1;

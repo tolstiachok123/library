@@ -5,6 +5,7 @@ import com.academia.andruhovich.library.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_DELETE;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_EDIT;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @Validated
 @RestController
@@ -32,24 +41,28 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
     public BookDto getBook(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('" + AUTHORITY_DELETE + "')")
     public ResponseEntity<Long> deleteBook(@PathVariable Long id) {
         service.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(NO_CONTENT).build();
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('" + AUTHORITY_WRITE + "')")
     public ResponseEntity<BookDto> createBook(@RequestBody @Valid BookDto dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.add(dto));
+        return ResponseEntity.status(CREATED).body(service.add(dto));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('" + AUTHORITY_EDIT + "')")
     public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody @Valid BookDto dto) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, dto));
+        return ResponseEntity.status(OK).body(service.update(id, dto));
     }
 
 }
