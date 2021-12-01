@@ -62,14 +62,14 @@ public class BookControllerTest {
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_READ, password = "12356")
     @Test
-    void getBooks() throws Exception {
+    void getPageableBooks() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/books")
+                .get("/api/books?page=0&size=1")
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").isNotEmpty());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].id").isNotEmpty());
     }
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_READ, password = "12356")
