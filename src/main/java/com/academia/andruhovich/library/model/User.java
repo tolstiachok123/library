@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -23,25 +24,30 @@ public class User {
 	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name = "last_name")
-	private String lastName;
+    @Column(name = "last_name")
+    private String lastName;
 
-	@Column(name = "email")
-	private String email;
+    @Column(name = "email")
+    private String email;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")},
-			inverseJoinColumns = {@JoinColumn(name = "role_id")})
-	private Set<Role> roles;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles = new HashSet<>();
 
-	@Column(name = "password")
-	private String password;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_order", joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")})
+    private Set<Order> orders = new HashSet<>();
 
-	//	@CreatedDate
-	private ZonedDateTime createdAt;
+    @Column(name = "password")
+    private String password;
 
-	//	@LastModifiedDate
-	private ZonedDateTime updatedAt;
+    //	@CreatedDate
+    private ZonedDateTime createdAt;
+
+    //	@LastModifiedDate
+    private ZonedDateTime updatedAt;
 
 	public User(Long id, String email, Set<Role> roles, String password) {
 		this.id = id;

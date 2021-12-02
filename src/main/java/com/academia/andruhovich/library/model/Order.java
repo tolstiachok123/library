@@ -1,0 +1,45 @@
+package com.academia.andruhovich.library.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "orders")
+//@EntityListeners(AuditingEntityListener.class)
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
+    @Column(name = "history")
+    private String history;
+
+    //	@CreatedDate
+    private ZonedDateTime createdAt;
+
+    //	@LastModifiedDate
+    private ZonedDateTime updatedAt;
+}

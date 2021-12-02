@@ -1,0 +1,1 @@
+INSERT INTO orders (id, status, history) VALUES (1, 'DELIVERED', '{[{"id":"1","title":"Dagon"},{"id":"2","title":"The whisper in darkness"}]}');
