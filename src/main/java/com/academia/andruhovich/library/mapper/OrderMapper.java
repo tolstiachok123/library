@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper {
 
+    @Mapping(target = "history", expression = "java( dto.getContent().toString() )")
     @Mapping(source = "createdAt", target = "createdAt", defaultExpression = "java( ZonedDateTime.now(ZoneId.of(\"Europe/Minsk\")) )")
     @Mapping(target = "updatedAt", expression = "java( ZonedDateTime.now(ZoneId.of(\"Europe/Minsk\")) )")
     Order dtoToModel(OrderDto dto);

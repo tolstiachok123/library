@@ -14,6 +14,7 @@ import java.util.Map;
 public class OrderDto {
 
     private Long id;
+    private Long userId;
     private Map<Long, Long> content;
     private BigDecimal totalPrice;
     private String status;

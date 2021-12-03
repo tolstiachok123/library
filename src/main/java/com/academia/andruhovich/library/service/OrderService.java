@@ -4,5 +4,5 @@ import com.academia.andruhovich.library.dto.OrderDto;
 
 public interface OrderService {
 
-    OrderDto add(OrderDto dto);
+    OrderDto create(OrderDto dto);
 }
