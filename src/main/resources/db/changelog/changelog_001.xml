@@ -7,7 +7,7 @@
 
     <changeSet author="tolstiachok123" id="1">
         <sql>
-            CREATE TABLE `author` (
+            CREATE TABLE IF NOT EXISTS `author` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             `first_name` varchar(255) DEFAULT NULL,
             `last_name` varchar(255) DEFAULT NULL,
@@ -18,7 +18,7 @@
 
     <changeSet author="tolstiachok123" id="2">
         <sql>
-            CREATE TABLE `tags` (
+            CREATE TABLE IF NOT EXISTS `tags` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             `name` varchar(255) DEFAULT NULL UNIQUE,
             PRIMARY KEY (`id`)
@@ -28,7 +28,7 @@
 
     <changeSet author="tolstiachok123" id="3">
         <sql>
-            CREATE TABLE `book` (
+            CREATE TABLE IF NOT EXISTS `book` (
             id BIGINT NOT NULL AUTO_INCREMENT,
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             image_url varchar(255) DEFAULT NULL,
@@ -44,7 +44,7 @@
 
     <changeSet author="tolstiachok123" id="4">
         <sql>
-            CREATE TABLE `book_tags` (
+            CREATE TABLE IF NOT EXISTS `book_tags` (
             `tags_id` BIGINT NOT NULL,
             `books_id` BIGINT NOT NULL,
             CONSTRAINT `fk_books_id` FOREIGN KEY (`books_id`) REFERENCES `book` (`id`),
@@ -55,7 +55,7 @@
 
     <changeSet author="tolstiachok123" id="5">
         <sql>
-            CREATE TABLE `authority` (
+            CREATE TABLE IF NOT EXISTS `authority` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             `name` varchar(255) DEFAULT NULL UNIQUE,
             PRIMARY KEY (`id`)
@@ -65,7 +65,7 @@
 
     <changeSet author="tolstiachok123" id="6">
         <sql>
-            CREATE TABLE `role` (
+            CREATE TABLE IF NOT EXISTS `role` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             `name` varchar(255) DEFAULT NULL UNIQUE,
             PRIMARY KEY (`id`)
@@ -75,7 +75,7 @@
 
     <changeSet author="tolstiachok123" id="7">
         <sql>
-            CREATE TABLE `role_authority` (
+            CREATE TABLE IF NOT EXISTS `role_authority` (
             `role_id` BIGINT NOT NULL,
             `authority_id` BIGINT NOT NULL,
             CONSTRAINT `fk_role_id1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
@@ -86,7 +86,7 @@
 
     <changeSet author="tolstiachok123" id="8">
         <sql>
-            CREATE TABLE `user` (
+            CREATE TABLE IF NOT EXISTS `user` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             `email` varchar(255) DEFAULT NULL UNIQUE,
@@ -101,7 +101,7 @@
 
     <changeSet author="tolstiachok123" id="9">
         <sql>
-            CREATE TABLE `user_role` (
+            CREATE TABLE IF NOT EXISTS `user_role` (
             `user_id` BIGINT NOT NULL,
             `role_id` BIGINT NOT NULL,
             CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
@@ -112,7 +112,7 @@
 
     <changeSet author="tolstiachok123" id="10">
         <sql>
-            CREATE TABLE `orders` (
+            CREATE TABLE IF NOT EXISTS `orders` (
             `id` BIGINT NOT NULL AUTO_INCREMENT,
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             `total_price` decimal(19,2) DEFAULT NULL,
@@ -126,7 +126,7 @@
 
     <changeSet author="tolstiachok123" id="11">
         <sql>
-            CREATE TABLE `user_order` (
+            CREATE TABLE IF NOT EXISTS `user_order` (
             `user_id` BIGINT NOT NULL,
             `order_id` BIGINT NOT NULL,
             CONSTRAINT `fk_user_id2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
