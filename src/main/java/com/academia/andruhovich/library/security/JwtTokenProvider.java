@@ -3,7 +3,11 @@ package com.academia.andruhovich.library.security;
 import com.academia.andruhovich.library.model.Authority;
 
 import com.academia.andruhovich.library.model.Role;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +19,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Base64;
+import java.util.Set;
+import java.util.Date;
+import java.util.HashSet;
 
 @Component
 public class JwtTokenProvider {

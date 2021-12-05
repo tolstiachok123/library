@@ -4,7 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.GenerationType;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +23,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-//@EntityListeners(AuditingEntityListener.class)
 public class User {
 
 	@Id
@@ -43,10 +51,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    //	@CreatedDate
     private ZonedDateTime createdAt;
 
-    //	@LastModifiedDate
     private ZonedDateTime updatedAt;
 
 	public User(Long id, String email, Set<Role> roles, String password) {

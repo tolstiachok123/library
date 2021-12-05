@@ -3,7 +3,6 @@ package com.academia.andruhovich.library.controller;
 import com.academia.andruhovich.library.dto.AuthorDto;
 import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

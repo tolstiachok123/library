@@ -20,7 +20,6 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "orders")
-//@EntityListeners(AuditingEntityListener.class)
 public class Order {
 
     @Id
@@ -37,9 +36,7 @@ public class Order {
     @Column(name = "history")
     private String history;
 
-    //	@CreatedDate
     private ZonedDateTime createdAt;
 
-    //	@LastModifiedDate
     private ZonedDateTime updatedAt;
 }
