@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto add(BookDto dto) {
         Book book = mapper.dtoToModel(dto);
-        book.setAuthor(authorService.getById(book.getAuthor().getId())); //@named
+        book.setAuthor(authorService.getById(book.getAuthor().getId()));
         book.setTags(tagService.updateOrCreateTags(dto.getTags()));
         return mapper.modelToDto(repository.save(book));
     }

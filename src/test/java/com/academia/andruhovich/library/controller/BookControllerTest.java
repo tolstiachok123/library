@@ -2,7 +2,6 @@ package com.academia.andruhovich.library.controller;
 
 import com.academia.andruhovich.library.dto.BookDto;
 import com.academia.andruhovich.library.service.BookService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
@@ -15,6 +14,8 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.io.IOException;
 
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_DELETE;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
@@ -114,7 +115,7 @@ public class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
     }
 
-    public static String convertToJsonString(final Object obj) throws JsonProcessingException {
+    public static String convertToJsonString(final Object obj) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper.writeValueAsString(obj);

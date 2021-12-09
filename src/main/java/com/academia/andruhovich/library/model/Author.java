@@ -1,5 +1,6 @@
 package com.academia.andruhovich.library.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,17 +22,18 @@ import java.util.Set;
 @Table(name = "author")
 public class Author {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "first_name")
-	private String firstName;
+    @Column(name = "first_name")
+    private String firstName;
 
-	@Column(name = "last_name")
-	private String lastName;
+    @Column(name = "last_name")
+    private String lastName;
 
-	@OneToMany(mappedBy = "author")
-	private Set<Book> books = new HashSet<>();
+//	@OneToMany(mappedBy = "author")
+//	@JsonManagedReference
+//	private Set<Book> books = new HashSet<>();
 
 }

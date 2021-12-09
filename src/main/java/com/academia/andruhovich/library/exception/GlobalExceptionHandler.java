@@ -22,47 +22,59 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(value = Throwable.class)
-	public ResponseEntity<Void> handle(Throwable throwable) {
-		log.error("Caught unhandled exception: {}", throwable.getMessage());
-		return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
-	}
+    @ExceptionHandler(value = Throwable.class)
+    public ResponseEntity<Void> handle(Throwable throwable) {
+        log.error("Caught unhandled exception: {}", throwable.getMessage());
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+    }
 
-	@ExceptionHandler(value = BusyEmailException.class)
-	public ResponseEntity<?> handle(BusyEmailException ex) {
-		log.error("Caught BusyEmailException: {}", ex.getMessage());
-		ExceptionDto exceptionDto = ExceptionDto.builder()
-				.status(BAD_REQUEST.value())
-				.error(BAD_REQUEST.getReasonPhrase())
-				.message(ex.getMessage())
-				.time(ZonedDateTime.now())
-				.build();
-		return ResponseEntity.status(BAD_REQUEST).body(exceptionDto);
-	}
+    @ExceptionHandler(value = NotUpdatableException.class)
+    public ResponseEntity<Object> handle(NotUpdatableException ex) {
+        log.error("Caught NotUpdatableException: {}", ex.getMessage());
+        ExceptionDto exceptionDto = ExceptionDto.builder()
+                .status(UNPROCESSABLE_ENTITY.value())
+                .error(UNPROCESSABLE_ENTITY.getReasonPhrase())
+                .message(ex.getMessage())
+                .time(ZonedDateTime.now())
+                .build();
+        return ResponseEntity.status(UNPROCESSABLE_ENTITY).body(exceptionDto);
+    }
 
-	@ExceptionHandler(value = AccessDeniedException.class)
-	public ResponseEntity<?> handle(AccessDeniedException ex) {
-		log.error("Caught AccessDeniedException: {}", ex.getMessage());
-		ExceptionDto exceptionDto = ExceptionDto.builder()
-				.status(FORBIDDEN.value())
-				.error(FORBIDDEN.getReasonPhrase())
-				.message(ex.getMessage())
-				.time(ZonedDateTime.now())
-				.build();
-		return ResponseEntity.status(FORBIDDEN).body(exceptionDto);
-	}
+    @ExceptionHandler(value = BusyEmailException.class)
+    public ResponseEntity<Object> handle(BusyEmailException ex) {
+        log.error("Caught BusyEmailException: {}", ex.getMessage());
+        ExceptionDto exceptionDto = ExceptionDto.builder()
+                .status(BAD_REQUEST.value())
+                .error(BAD_REQUEST.getReasonPhrase())
+                .message(ex.getMessage())
+                .time(ZonedDateTime.now())
+                .build();
+        return ResponseEntity.status(BAD_REQUEST).body(exceptionDto);
+    }
 
-	@ExceptionHandler(value = ResourceNotFoundException.class)
-	public ResponseEntity<?> handle(ResourceNotFoundException exception) {
-		log.error("Caught ResourceNotFoundException: {}", exception.getMessage());
-		ExceptionDto exceptionDto = ExceptionDto.builder()
-				.status(NOT_FOUND.value())
-				.error(NOT_FOUND.getReasonPhrase())
-				.message(exception.getMessage())
-				.time(ZonedDateTime.now())
-				.build();
-		return ResponseEntity.status(NOT_FOUND).body(exceptionDto);
-	}
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<Object> handle(AccessDeniedException ex) {
+        log.error("Caught AccessDeniedException: {}", ex.getMessage());
+        ExceptionDto exceptionDto = ExceptionDto.builder()
+                .status(FORBIDDEN.value())
+                .error(FORBIDDEN.getReasonPhrase())
+                .message(ex.getMessage())
+                .time(ZonedDateTime.now())
+                .build();
+        return ResponseEntity.status(FORBIDDEN).body(exceptionDto);
+    }
+
+    @ExceptionHandler(value = ResourceNotFoundException.class)
+    public ResponseEntity<Object> handle(ResourceNotFoundException exception) {
+        log.error("Caught ResourceNotFoundException: {}", exception.getMessage());
+        ExceptionDto exceptionDto = ExceptionDto.builder()
+                .status(NOT_FOUND.value())
+                .error(NOT_FOUND.getReasonPhrase())
+                .message(exception.getMessage())
+                .time(ZonedDateTime.now())
+                .build();
+        return ResponseEntity.status(NOT_FOUND).body(exceptionDto);
+    }
 
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
