@@ -1,5 +1,6 @@
 package com.academia.andruhovich.library.service.impl;
 
+import com.academia.andruhovich.library.dto.BookDto;
 import com.academia.andruhovich.library.dto.OrderContentWrapper;
 import com.academia.andruhovich.library.dto.OrderRequestDto;
 import com.academia.andruhovich.library.dto.OrderResponseDto;
@@ -25,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +37,8 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
 
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
@@ -51,14 +53,10 @@ public class OrderServiceImpl implements OrderService {
         User user = userService.getCurrent();
         Set<OrderResponseDto> orderResponses = new HashSet<>();
         user.getOrders().forEach(order -> {
-            if (order.getStatus().equals(OrderStatus.DRAFT)) {
-                try {
-                    synchroniseOrder(order);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
             try {
+                if (order.getStatus().equals(OrderStatus.DRAFT)) {
+                    synchroniseOrder(order);
+                }
                 orderResponses.add(orderMapper.modelToDto(order));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -85,18 +83,20 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderResponseDto create(OrderRequestDto orderRequestDto) throws JsonProcessingException {
+
         Order order = orderMapper.dtoToModel(orderRequestDto);
 
-        List<Book> books = orderRequestDto
-                .getOrderContent()
+        Map<Long, Integer> orderContent = orderRequestDto.getOrderContent();
+
+        List<Book> books = orderContent
                 .keySet()
                 .stream()
-                .map(id -> bookRepository.findById(id)
-                        .orElseThrow(() -> new NotFoundException(String.format(ErrorMessages.BOOK_NOT_FOUND, id))))
+                .map(id -> bookRepository.findById(id).orElseThrow(() ->
+                        new NotFoundException(String.format(ErrorMessages.BOOK_NOT_FOUND, id))))
                 .collect(Collectors.toList());
 
-        setHistoryBooks(order, orderRequestDto.getOrderContent(), books);
-        updateTotalPrice(order, orderRequestDto.getOrderContent(), books);
+        order.setHistory(createHistoryBooks(orderContent, books));
+        order.setTotalPrice(calculateTotalPrice(orderContent, books));
 
         order = orderRepository.save(order);
 
@@ -139,75 +139,75 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private void setHistoryBooks(Order order, Map<Long, Integer> orderContent, List<Book> books) throws JsonProcessingException {
+    private String createHistoryBooks(Map<Long, Integer> orderContent, List<Book> books) throws JsonProcessingException {
 
-        Set<OrderContentWrapper> responseOrderDtoContent = books.stream()
+        Set<OrderContentWrapper> responseOrderContentSet = books.stream()
                 .flatMap(book ->
                         Stream.of(new OrderContentWrapper(bookMapper.modelToDto(book), orderContent.get(book.getId()))))
                 .collect(Collectors.toSet());
 
-        order.setHistory(new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .writeValueAsString(responseOrderDtoContent));
-
+        return OBJECT_MAPPER.writeValueAsString(responseOrderContentSet);
     }
 
-    private void updateTotalPrice(Order order, Map<Long, Integer> orderContent, List<Book> books) {
+    private BigDecimal calculateTotalPrice(Map<Long, Integer> orderContent, List<Book> books) {
 
-        order.setTotalPrice(new BigDecimal("0.00"));
-        books.stream()
-                .map(book -> {
-                    order.setTotalPrice(
-                            order.getTotalPrice()
-                                    .add(book.getPrice()
-                                            .multiply(
-                                                    BigDecimal.valueOf(orderContent.get(book.getId())))));
+        return orderContent.entrySet().stream()
+                .map(entry -> {
+                    BigDecimal quantity = BigDecimal.valueOf(entry.getValue());
+
+                    Book currentBook = new Book();
+                    for (Book book : books) {
+                        if (book.getId().equals(entry.getKey())) {
+                            currentBook = book;
+                        }
+                    }
+                    return currentBook.getPrice().multiply(quantity);
                 })
-
-
-        books.forEach(book -> {
-            BigDecimal quantity = new BigDecimal(orderContent.get(book.getId()));
-
-            order.setTotalPrice(
-                    order.getTotalPrice()
-                            .add(book.getPrice()
-                                    .multiply(quantity)));
-        });
+                .reduce(BigDecimal.valueOf(0), BigDecimal::add);
     }
 
-    private void synchroniseOrder(Order order) throws JsonProcessingException {
+    private BigDecimal calculateTotalPrice(Set<OrderContentWrapper> orderContent, List<Book> books) {
 
-        Set<OrderContentWrapper> orderContentWrappers = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .readValue(order.getHistory(), Set.class);
+        return orderContent.stream()
+                .map(orderContentWrapper -> {
+                    BigDecimal quantity = BigDecimal.valueOf(orderContentWrapper.getQuantity());
 
-        Set<Book> books = orderContentWrappers.stream()
+                    Book currentBook = new Book();
+                    for (Book book : books) {
+                        if (book.getId().equals(orderContentWrapper.getBook().getId())) {
+                            currentBook = book;
+                        }
+                    }
+                    return currentBook.getPrice().multiply(quantity);
+                })
+                .reduce(BigDecimal.valueOf(0), BigDecimal::add);
+    }
+
+    private Order synchroniseOrder(Order order) throws JsonProcessingException {
+
+        Set<OrderContentWrapper> orderContentWrappers = OBJECT_MAPPER.readValue(order.getHistory(), Set.class);
+
+        List<Book> synchronisedBooks = orderContentWrappers.stream()
                 .map(OrderContentWrapper::getBook)
-                .map(bookMapper::dtoToModel)
-                .collect(Collectors.toSet());
-
-        Set<OrderContentWrapper> synchronisedOrderContentWrappers = books.stream()
-                .map(Book::getId)
+                .map(BookDto::getId)
                 .map(bookRepository::findById)
                 .map(optional -> optional.orElse(null))
                 .filter(Objects::nonNull)
+                .collect(Collectors.toList());              //тут не работает!!!
+
+        Set<OrderContentWrapper> synchronisedOrderContentWrappers = synchronisedBooks.stream()
                 .map(Book::getId)
-                .map(id -> {
-                    List<OrderContentWrapper> existing = orderContentWrappers.stream()
-                            .filter(orderContentWrapper -> orderContentWrapper.getBook().getId().equals(id))
-                            .collect(Collectors.toList());
-                    return existing.get(0);
-                })
+                .map(id -> orderContentWrappers.stream()
+                        .filter(orderContentWrapper -> orderContentWrapper.getBook().getId().equals(id))
+                        .findFirst()
+                        .get()
+                )
                 .collect(Collectors.toSet());
 
-        Map<Long, Integer> orderContent = new HashMap<>();
+        order.setHistory(OBJECT_MAPPER.writeValueAsString(synchronisedOrderContentWrappers));
+        order.setTotalPrice(calculateTotalPrice(synchronisedOrderContentWrappers, synchronisedBooks));
 
-        synchronisedOrderContentWrappers.forEach(orderContentWrapper -> orderContent.put(orderContentWrapper.getBook().getId(), orderContentWrapper.getQuantity()));
-
-        setHistoryBooks(order, orderContent, synchronisedBooks);
-        updateTotalPrice(order, orderContent, synchronisedBooks);
-
-        orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
 }
