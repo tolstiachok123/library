@@ -19,6 +19,8 @@ import com.academia.andruhovich.library.repository.UserRepository;
 import com.academia.andruhovich.library.service.OrderService;
 import com.academia.andruhovich.library.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
@@ -117,7 +119,20 @@ public class OrderServiceImpl implements OrderService {
             throw new NotUpdatableException(String.format(ErrorMessages.NOT_UPDATABLE_ORDER, order.getStatus().name()));
         }
 
+        Map<Long, Integer> orderContent = orderRequestDto.getOrderContent();
+
+        List<Book> books = orderContent
+                .keySet()
+                .stream()
+                .map(bookId -> bookRepository.findById(bookId).orElseThrow(() ->
+                        new NotFoundException(String.format(ErrorMessages.BOOK_NOT_FOUND, bookId))))
+                .collect(Collectors.toList());
+
         order = orderMapper.updateEntityFromDto(order, orderRequestDto);
+
+        order.setHistory(createHistoryBooks(orderContent, books));
+        order.setTotalPrice(calculateTotalPrice(orderContent, books));
+
         order = orderRepository.save(order);
 
         return orderMapper.modelToDto(order);
@@ -185,7 +200,9 @@ public class OrderServiceImpl implements OrderService {
 
     private Order synchroniseOrder(Order order) throws JsonProcessingException {
 
-        Set<OrderContentWrapper> orderContentWrappers = OBJECT_MAPPER.readValue(order.getHistory(), Set.class);
+        JsonNode jsonNode = OBJECT_MAPPER.readTree(order.getHistory());
+        Set<OrderContentWrapper> orderContentWrappers = OBJECT_MAPPER.convertValue(jsonNode, new TypeReference<>() {
+        });
 
         List<Book> synchronisedBooks = orderContentWrappers.stream()
                 .map(OrderContentWrapper::getBook)
@@ -193,7 +210,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(bookRepository::findById)
                 .map(optional -> optional.orElse(null))
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());              //тут не работает!!!
+                .collect(Collectors.toList());
 
         Set<OrderContentWrapper> synchronisedOrderContentWrappers = synchronisedBooks.stream()
                 .map(Book::getId)
