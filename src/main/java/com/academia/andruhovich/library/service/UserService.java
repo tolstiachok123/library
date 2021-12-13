@@ -10,5 +10,4 @@ public interface UserService {
 
     User getCurrent();
 
-    void setOrderToCurrentUser(Order order);
 }

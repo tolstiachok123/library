@@ -1,23 +1,19 @@
 package com.academia.andruhovich.library.dto;
 
+import com.academia.andruhovich.library.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderRequestDto {
+public class RequestSaveOrderDto {
 
-    private Long id;
     private Map<Long, Integer> orderContent;
-    private BigDecimal totalPrice;
-    private String status;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private OrderStatus status;
 
 }

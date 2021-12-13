@@ -7,18 +7,16 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Set;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponseDto {
+public class RequestOrderDto {
 
     private Long id;
-    private Set<OrderContentWrapper> orderContent;
+    private Map<Long, Integer> orderContent;
     private BigDecimal totalPrice;
     private OrderStatus status;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
 
 }

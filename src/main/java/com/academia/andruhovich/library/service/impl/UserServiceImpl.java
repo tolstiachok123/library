@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 import static com.academia.andruhovich.library.exception.ErrorMessages.BUSY_EMAIL;
-import static com.academia.andruhovich.library.exception.ErrorMessages.USER_NOT_FOUND;
 import static com.academia.andruhovich.library.exception.ErrorMessages.ROLE_NOT_FOUND;
 
 @Service
@@ -52,18 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrent() {
-        String email = ((CustomPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND, email)));
-    }
-
-    @Override
-    public void setOrderToCurrentUser(Order order) {
-        User currentUser = getCurrent();
-        Set<Order> orders = currentUser.getOrders();
-        orders.add(order);
-        currentUser.setOrders(orders);
-        userRepository.save(currentUser);
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 }

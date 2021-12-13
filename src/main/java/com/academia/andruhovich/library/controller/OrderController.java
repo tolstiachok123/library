@@ -1,7 +1,8 @@
 package com.academia.andruhovich.library.controller;
 
-import com.academia.andruhovich.library.dto.OrderRequestDto;
+import com.academia.andruhovich.library.dto.RequestOrderDto;
 import com.academia.andruhovich.library.dto.OrderResponseDto;
+import com.academia.andruhovich.library.dto.RequestSaveOrderDto;
 import com.academia.andruhovich.library.service.OrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -45,12 +46,12 @@ public class OrderController {
 	}
 
 	@PostMapping
-	public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderRequestDto dto) throws JsonProcessingException {
+	public ResponseEntity<OrderResponseDto> createOrder(@RequestBody RequestSaveOrderDto dto) throws JsonProcessingException {
 		return ResponseEntity.status(CREATED).body(service.create(dto));
 	}
 
 	@PutMapping
-	public ResponseEntity<OrderResponseDto> updateOrder(@RequestBody OrderRequestDto dto) throws JsonProcessingException {
+	public ResponseEntity<OrderResponseDto> updateOrder(@RequestBody RequestOrderDto dto) throws JsonProcessingException {
 		return ResponseEntity.status(OK).body(service.update(dto));
 	}
 }

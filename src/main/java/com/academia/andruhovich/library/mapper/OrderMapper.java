@@ -1,7 +1,8 @@
 package com.academia.andruhovich.library.mapper;
 
-import com.academia.andruhovich.library.dto.OrderRequestDto;
+import com.academia.andruhovich.library.dto.RequestOrderDto;
 import com.academia.andruhovich.library.dto.OrderResponseDto;
+import com.academia.andruhovich.library.dto.RequestSaveOrderDto;
 import com.academia.andruhovich.library.model.Order;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,12 +25,10 @@ import java.util.Set;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper {
 
-    @Mapping(source = "createdAt", target = "createdAt", defaultExpression = "java( ZonedDateTime.now(ZoneId.of(\"Europe/Minsk\")) )")
-    @Mapping(target = "updatedAt", expression = "java( ZonedDateTime.now(ZoneId.of(\"Europe/Minsk\")) )")
-    Order dtoToModel(OrderRequestDto dto);
+    Order dtoToModel(RequestSaveOrderDto dto);
 
     @Mapping(target = "orderContent", expression = "java( new ObjectMapper().registerModule(new JavaTimeModule()).readValue(order.getHistory(), Set.class) )")
     OrderResponseDto modelToDto(Order order) throws JsonProcessingException;
 
-    Order updateEntityFromDto(@MappingTarget Order order, OrderRequestDto requestDto);
+    Order updateEntityFromDto(@MappingTarget Order order, RequestOrderDto requestDto);
 }

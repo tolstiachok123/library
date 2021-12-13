@@ -1,16 +1,17 @@
 package com.academia.andruhovich.library.service;
 
-import com.academia.andruhovich.library.dto.OrderRequestDto;
+import com.academia.andruhovich.library.dto.RequestOrderDto;
 import com.academia.andruhovich.library.dto.OrderResponseDto;
+import com.academia.andruhovich.library.dto.RequestSaveOrderDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.Set;
 
 public interface OrderService {
 
-    OrderResponseDto create(OrderRequestDto dto) throws JsonProcessingException;
+    OrderResponseDto create(RequestSaveOrderDto dto) throws JsonProcessingException;
 
-    OrderResponseDto update(OrderRequestDto dto) throws JsonProcessingException;
+    OrderResponseDto update(RequestOrderDto dto) throws JsonProcessingException;
 
     void delete(Long id);
 

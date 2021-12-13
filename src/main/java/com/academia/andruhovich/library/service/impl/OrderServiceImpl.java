@@ -1,9 +1,6 @@
 package com.academia.andruhovich.library.service.impl;
 
-import com.academia.andruhovich.library.dto.BookDto;
-import com.academia.andruhovich.library.dto.OrderContentWrapper;
-import com.academia.andruhovich.library.dto.OrderRequestDto;
-import com.academia.andruhovich.library.dto.OrderResponseDto;
+import com.academia.andruhovich.library.dto.*;
 import com.academia.andruhovich.library.exception.ErrorMessages;
 import com.academia.andruhovich.library.exception.NotFoundException;
 import com.academia.andruhovich.library.exception.NotUpdatableException;
@@ -28,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -40,21 +39,20 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
-
+    private final ObjectMapper objectMapper;
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @Transactional
     @Override
     public Set<OrderResponseDto> getAll() {
         User user = userService.getCurrent();
         Set<OrderResponseDto> orderResponses = new HashSet<>();
-        user.getOrders().forEach(order -> {
+        Set<Order> orders = orderRepository.getAllByUserId(user.getId());
+        orders.forEach(order -> {
             try {
                 if (order.getStatus().equals(OrderStatus.DRAFT)) {
                     synchroniseOrder(order);
@@ -71,47 +69,62 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDto getOrder(Long id) {
         User user = userService.getCurrent();
-        if (user.getOrders().stream().anyMatch(order -> order.getId().equals(id))) {
-            OrderResponseDto responseDto = new OrderResponseDto();
-            try {
-                responseDto = orderMapper.modelToDto(orderRepository.getById(id));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            return responseDto;
-        } else throw new NotFoundException(String.format(ErrorMessages.ORDER_NOT_FOUND, id));
+
+        Order order = orderRepository.getByIdAndUserId(id, user.getId()).orElseThrow(() ->
+                new NotFoundException(String.format(ErrorMessages.ORDER_NOT_FOUND, id)));
+
+        OrderResponseDto responseDto = new OrderResponseDto();
+        try {
+            responseDto = orderMapper.modelToDto(order);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return responseDto;
     }
 
     @Transactional
     @Override
-    public OrderResponseDto create(OrderRequestDto orderRequestDto) throws JsonProcessingException {
+    public OrderResponseDto create(RequestSaveOrderDto requestSaveOrderDto) {
 
-        Order order = orderMapper.dtoToModel(orderRequestDto);
+        Order order = new Order();
+        order.setStatus(requestSaveOrderDto.getStatus());
+        order.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Minsk")));
+        order.setUpdatedAt(ZonedDateTime.now(ZoneId.of("Europe/Minsk")));
 
-        Map<Long, Integer> orderContent = orderRequestDto.getOrderContent();
+        User user = userService.getCurrent();
+        order.setUser(user);
 
-        List<Book> books = orderContent
-                .keySet()
-                .stream()
-                .map(id -> bookRepository.findById(id).orElseThrow(() ->
-                        new NotFoundException(String.format(ErrorMessages.BOOK_NOT_FOUND, id))))
-                .collect(Collectors.toList());
+        Map<Long, Integer> orderContent = requestSaveOrderDto.getOrderContent();
+
+        List<Book> books = bookRepository.findAllById(orderContent.keySet());
 
         order.setHistory(createHistoryBooks(orderContent, books));
         order.setTotalPrice(calculateTotalPrice(orderContent, books));
 
         order = orderRepository.save(order);
 
-        userService.setOrderToCurrentUser(order);
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setId(order.getId());
+        orderResponseDto.setStatus(order.getStatus());
+        orderResponseDto.setTotalPrice(order.getTotalPrice());
+        orderResponseDto.setCreatedAt(order.getCreatedAt());
+        orderResponseDto.setUpdatedAt(order.getUpdatedAt());
 
-        return orderMapper.modelToDto(order);
+        try {
+            JsonNode jsonNode = objectMapper.readTree(order.getHistory());
+            orderResponseDto.setOrderContent(objectMapper.convertValue(jsonNode, new TypeReference<>() {}));
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+        }
+
+        return orderResponseDto;
     }
 
     @Transactional
     @Override
-    public OrderResponseDto update(OrderRequestDto orderRequestDto) throws JsonProcessingException {
+    public OrderResponseDto update(RequestOrderDto RequestOrderDto) throws JsonProcessingException {
 
-        Long id = orderRequestDto.getId();
+        Long id = RequestOrderDto.getId();
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(ErrorMessages.ORDER_NOT_FOUND, id)));
 
@@ -119,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
             throw new NotUpdatableException(String.format(ErrorMessages.NOT_UPDATABLE_ORDER, order.getStatus().name()));
         }
 
-        Map<Long, Integer> orderContent = orderRequestDto.getOrderContent();
+        Map<Long, Integer> orderContent = RequestOrderDto.getOrderContent();
 
         List<Book> books = orderContent
                 .keySet()
@@ -128,7 +141,7 @@ public class OrderServiceImpl implements OrderService {
                         new NotFoundException(String.format(ErrorMessages.BOOK_NOT_FOUND, bookId))))
                 .collect(Collectors.toList());
 
-        order = orderMapper.updateEntityFromDto(order, orderRequestDto);
+        order = orderMapper.updateEntityFromDto(order, RequestOrderDto);
 
         order.setHistory(createHistoryBooks(orderContent, books));
         order.setTotalPrice(calculateTotalPrice(orderContent, books));
@@ -143,25 +156,29 @@ public class OrderServiceImpl implements OrderService {
     public void delete(Long id) {
         User user = userService.getCurrent();
 
-        int size = user.getOrders().size();
-        user.getOrders().removeIf(order -> order.getId().equals(id));
+        orderRepository.getByIdAndUserId(id, user.getId()).orElseThrow(() ->
+                new NotFoundException(String.format(ErrorMessages.ORDER_NOT_FOUND, id)));
 
-        if (size != user.getOrders().size()) {
-            userRepository.save(user);
-            orderRepository.deleteById(id);
-        } else {
-            throw new NotFoundException(String.format(ErrorMessages.ORDER_NOT_FOUND, id));
-        }
+        orderRepository.deleteById(id);
     }
 
-    private String createHistoryBooks(Map<Long, Integer> orderContent, List<Book> books) throws JsonProcessingException {
+
+
+    private String createHistoryBooks(Map<Long, Integer> orderContent, List<Book> books) {
 
         Set<OrderContentWrapper> responseOrderContentSet = books.stream()
                 .flatMap(book ->
                         Stream.of(new OrderContentWrapper(bookMapper.modelToDto(book), orderContent.get(book.getId()))))
                 .collect(Collectors.toSet());
 
-        return OBJECT_MAPPER.writeValueAsString(responseOrderContentSet);
+        String history = "";
+        try {
+            history = objectMapper.writeValueAsString(responseOrderContentSet);
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+        }
+
+        return history;
     }
 
     private BigDecimal calculateTotalPrice(Map<Long, Integer> orderContent, List<Book> books) {
@@ -200,8 +217,8 @@ public class OrderServiceImpl implements OrderService {
 
     private Order synchroniseOrder(Order order) throws JsonProcessingException {
 
-        JsonNode jsonNode = OBJECT_MAPPER.readTree(order.getHistory());
-        Set<OrderContentWrapper> orderContentWrappers = OBJECT_MAPPER.convertValue(jsonNode, new TypeReference<>() {
+        JsonNode jsonNode = objectMapper.readTree(order.getHistory());
+        Set<OrderContentWrapper> orderContentWrappers = objectMapper.convertValue(jsonNode, new TypeReference<>() {
         });
 
         List<Book> synchronisedBooks = orderContentWrappers.stream()
@@ -221,7 +238,7 @@ public class OrderServiceImpl implements OrderService {
                 )
                 .collect(Collectors.toSet());
 
-        order.setHistory(OBJECT_MAPPER.writeValueAsString(synchronisedOrderContentWrappers));
+        order.setHistory(objectMapper.writeValueAsString(synchronisedOrderContentWrappers));
         order.setTotalPrice(calculateTotalPrice(synchronisedOrderContentWrappers, synchronisedBooks));
 
         return orderRepository.save(order);
