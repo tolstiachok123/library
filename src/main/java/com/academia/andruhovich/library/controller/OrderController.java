@@ -46,12 +46,12 @@ public class OrderController {
 	}
 
 	@PostMapping
-	public ResponseEntity<OrderResponseDto> createOrder(@RequestBody RequestSaveOrderDto dto) throws JsonProcessingException {
+	public ResponseEntity<OrderResponseDto> createOrder(@RequestBody RequestSaveOrderDto dto) {
 		return ResponseEntity.status(CREATED).body(service.create(dto));
 	}
 
-	@PutMapping
-	public ResponseEntity<OrderResponseDto> updateOrder(@RequestBody RequestOrderDto dto) throws JsonProcessingException {
-		return ResponseEntity.status(OK).body(service.update(dto));
+	@PutMapping("/{id}")
+	public ResponseEntity<OrderResponseDto> updateOrder(@PathVariable Long id, @RequestBody RequestOrderDto dto) {
+		return ResponseEntity.status(OK).body(service.update(id, dto));
 	}
 }

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,6 +36,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -114,7 +116,9 @@ public class OrderServiceImpl implements OrderService {
             JsonNode jsonNode = objectMapper.readTree(order.getHistory());
             orderResponseDto.setOrderContent(objectMapper.convertValue(jsonNode, new TypeReference<>() {}));
         } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
+            log.error("Cannot read ...");
+            throw new RuntimeException("Cannot read ...");
         }
 
         return orderResponseDto;
@@ -122,13 +126,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public OrderResponseDto update(RequestOrderDto RequestOrderDto) throws JsonProcessingException {
+    public OrderResponseDto update(RequestOrderDto RequestOrderDto) {
 
         Long id = RequestOrderDto.getId();
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(ErrorMessages.ORDER_NOT_FOUND, id)));
 
-        if (!order.getStatus().equals(OrderStatus.DRAFT)) {
+        if (!OrderStatus.DRAFT.equals(order.getStatus())) {
             throw new NotUpdatableException(String.format(ErrorMessages.NOT_UPDATABLE_ORDER, order.getStatus().name()));
         }
 
