@@ -2,14 +2,12 @@ package com.academia.andruhovich.library.service.impl;
 
 import com.academia.andruhovich.library.dto.UserDto;
 import com.academia.andruhovich.library.exception.BusyEmailException;
-import com.academia.andruhovich.library.exception.NotFoundException;
+import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.mapper.UserMapper;
-import com.academia.andruhovich.library.model.Order;
 import com.academia.andruhovich.library.model.Role;
 import com.academia.andruhovich.library.model.User;
 import com.academia.andruhovich.library.repository.RoleRepository;
 import com.academia.andruhovich.library.repository.UserRepository;
-import com.academia.andruhovich.library.security.CustomPrincipal;
 import com.academia.andruhovich.library.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,7 +41,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role role = roleRepository.getByName(DEFAULT_ROLE)
-                .orElseThrow(() -> new NotFoundException(String.format(ROLE_NOT_FOUND, DEFAULT_ROLE)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(ROLE_NOT_FOUND, DEFAULT_ROLE)));
         user.setRoles(Set.of(role));
 
         return mapper.modelToDto(userRepository.save(user));

@@ -18,5 +18,7 @@ public class RequestOrderDto {
     private Map<Long, Integer> orderContent;
     private BigDecimal totalPrice;
     private OrderStatus status;
+    private ZonedDateTime createdAt;
+    private ZonedDateTime updatedAt;
 
 }

@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
-public class NotUpdatableException extends RuntimeException {
+public class InvalidJsonException extends RuntimeException {
 
-    public NotUpdatableException(String message) {
+    public InvalidJsonException(String message) {
         super(message);
     }
 }

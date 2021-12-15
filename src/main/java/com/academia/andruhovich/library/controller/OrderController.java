@@ -2,9 +2,7 @@ package com.academia.andruhovich.library.controller;
 
 import com.academia.andruhovich.library.dto.RequestOrderDto;
 import com.academia.andruhovich.library.dto.OrderResponseDto;
-import com.academia.andruhovich.library.dto.RequestSaveOrderDto;
 import com.academia.andruhovich.library.service.OrderService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,9 +44,9 @@ public class OrderController {
 	}
 
 	@PostMapping
-	public ResponseEntity<OrderResponseDto> createOrder(@RequestBody RequestSaveOrderDto dto) {
-		return ResponseEntity.status(CREATED).body(service.create(dto));
-	}
+    public ResponseEntity<OrderResponseDto> createOrder(@RequestBody RequestOrderDto dto) {
+        return ResponseEntity.status(CREATED).body(service.create(dto));
+    }
 
 	@PutMapping("/{id}")
 	public ResponseEntity<OrderResponseDto> updateOrder(@PathVariable Long id, @RequestBody RequestOrderDto dto) {

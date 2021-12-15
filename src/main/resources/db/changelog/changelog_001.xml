@@ -7,38 +7,95 @@
 
     <changeSet author="tolstiachok123" id="1">
         <sql>
-            CREATE TABLE IF NOT EXISTS `author` (
-            `id` BIGINT NOT NULL AUTO_INCREMENT,
-            `first_name` varchar(255) DEFAULT NULL,
-            `last_name` varchar(255) DEFAULT NULL,
-            PRIMARY KEY (`id`)
-            );
+            CREATE TABLE IF NOT EXISTS `author`
+            (
+                `id`
+                BIGINT
+                NOT
+                NULL
+                AUTO_INCREMENT,
+                `first_name`
+                varchar
+            (
+                255
+            ),
+                `last_name` varchar
+            (
+                255
+            ),
+                PRIMARY KEY
+            (
+                `id`
+            )
+                );
         </sql>
     </changeSet>
 
     <changeSet author="tolstiachok123" id="2">
         <sql>
-            CREATE TABLE IF NOT EXISTS `tags` (
-            `id` BIGINT NOT NULL AUTO_INCREMENT,
-            `name` varchar(255) DEFAULT NULL UNIQUE,
-            PRIMARY KEY (`id`)
-            );
+            CREATE TABLE IF NOT EXISTS `tags`
+            (
+                `id`
+                BIGINT
+                NOT
+                NULL
+                AUTO_INCREMENT,
+                `name`
+                varchar
+            (
+                255
+            ) NOT NULL UNIQUE,
+                PRIMARY KEY
+            (
+                `id`
+            )
+                );
         </sql>
     </changeSet>
 
     <changeSet author="tolstiachok123" id="3">
         <sql>
-            CREATE TABLE IF NOT EXISTS `book` (
-            id BIGINT NOT NULL AUTO_INCREMENT,
-            created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            image_url varchar(255) DEFAULT NULL,
-            price decimal(19,2) DEFAULT NULL,
-            title varchar(255) DEFAULT NULL,
-            updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            author_id BIGINT NOT NULL,
-            PRIMARY KEY (id),
-            CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES author (id)
-            );
+            CREATE TABLE IF NOT EXISTS `book`
+            (
+                id
+                BIGINT
+                NOT
+                NULL
+                AUTO_INCREMENT,
+                created_at
+                timestamp
+                NOT
+                NULL
+                DEFAULT
+                CURRENT_TIMESTAMP,
+                image_url
+                varchar
+            (
+                255
+            ),
+                price decimal
+            (
+                19,
+                2
+            ),
+                title varchar
+            (
+                255
+            ),
+                updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                author_id BIGINT NOT NULL,
+                PRIMARY KEY
+            (
+                id
+            ),
+                CONSTRAINT fk_author_id FOREIGN KEY
+            (
+                author_id
+            ) REFERENCES author
+            (
+                id
+            )
+                );
         </sql>
     </changeSet>
 
@@ -55,21 +112,45 @@
 
     <changeSet author="tolstiachok123" id="5">
         <sql>
-            CREATE TABLE IF NOT EXISTS `authority` (
-            `id` BIGINT NOT NULL AUTO_INCREMENT,
-            `name` varchar(255) DEFAULT NULL UNIQUE,
-            PRIMARY KEY (`id`)
-            );
+            CREATE TABLE IF NOT EXISTS `authority`
+            (
+                `id`
+                BIGINT
+                NOT
+                NULL
+                AUTO_INCREMENT,
+                `name`
+                varchar
+            (
+                255
+            ) UNIQUE,
+                PRIMARY KEY
+            (
+                `id`
+            )
+                );
         </sql>
     </changeSet>
 
     <changeSet author="tolstiachok123" id="6">
         <sql>
-            CREATE TABLE IF NOT EXISTS `role` (
-            `id` BIGINT NOT NULL AUTO_INCREMENT,
-            `name` varchar(255) DEFAULT NULL UNIQUE,
-            PRIMARY KEY (`id`)
-            );
+            CREATE TABLE IF NOT EXISTS `role`
+            (
+                `id`
+                BIGINT
+                NOT
+                NULL
+                AUTO_INCREMENT,
+                `name`
+                varchar
+            (
+                255
+            ) UNIQUE,
+                PRIMARY KEY
+            (
+                `id`
+            )
+                );
         </sql>
     </changeSet>
 
@@ -86,16 +167,42 @@
 
     <changeSet author="tolstiachok123" id="8">
         <sql>
-            CREATE TABLE IF NOT EXISTS `user` (
-            `id` BIGINT NOT NULL AUTO_INCREMENT,
-            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `email` varchar(255) DEFAULT NULL UNIQUE,
-            `first_name` varchar(255) DEFAULT NULL,
-            `last_name` varchar(255) DEFAULT NULL,
-            `password` varchar(255) DEFAULT NULL,
-            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (`id`)
-            );
+            CREATE TABLE IF NOT EXISTS `user`
+            (
+                `id`
+                BIGINT
+                NOT
+                NULL
+                AUTO_INCREMENT,
+                `created_at`
+                timestamp
+                NOT
+                NULL
+                DEFAULT
+                CURRENT_TIMESTAMP,
+                `email`
+                varchar
+            (
+                255
+            ) NOT NULL UNIQUE,
+                `first_name` varchar
+            (
+                255
+            ),
+                `last_name` varchar
+            (
+                255
+            ),
+                `password` varchar
+            (
+                255
+            ) NOT NULL,
+                `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY
+            (
+                `id`
+            )
+                );
         </sql>
     </changeSet>
 
@@ -112,17 +219,47 @@
 
     <changeSet author="tolstiachok123" id="10">
         <sql>
-            CREATE TABLE IF NOT EXISTS `orders` (
-            `id` BIGINT NOT NULL AUTO_INCREMENT,
-            `user_id` BIGINT NOT NULL,
-            created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `total_price` decimal(19,2) DEFAULT NULL,
-            `status` varchar(255) NOT NULL DEFAULT 'DRAFT',
-            updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `history` JSON NOT NULL,
-            PRIMARY KEY (`id`),
-            CONSTRAINT `fk_user_id2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+            CREATE TABLE IF NOT EXISTS `orders`
+            (
+                `id`
+                BIGINT
+                NOT
+                NULL
+                AUTO_INCREMENT,
+                `user_id`
+                BIGINT
+                NOT
+                NULL,
+                created_at
+                timestamp
+                NOT
+                NULL
+                DEFAULT
+                CURRENT_TIMESTAMP,
+                `total_price`
+                decimal
+            (
+                19,
+                2
+            ),
+                `status` varchar
+            (
+                255
+            ) NOT NULL DEFAULT 'DRAFT',
+                updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `history` JSON NOT NULL,
+                PRIMARY KEY
+            (
+                `id`
+            ),
+                CONSTRAINT `fk_user_id2` FOREIGN KEY
+            (
+                `user_id`
+            ) REFERENCES `user`
+            (
+                `id`
             )
+                )
         </sql>
     </changeSet>
 

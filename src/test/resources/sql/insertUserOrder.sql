@@ -1,1 +1,0 @@
-INSERT INTO user_order (user_id, order_id) VALUES (1, 1);
