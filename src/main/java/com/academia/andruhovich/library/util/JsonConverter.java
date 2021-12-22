@@ -1,6 +1,7 @@
 package com.academia.andruhovich.library.util;
 
 import com.academia.andruhovich.library.dto.OrderContentWrapper;
+import com.academia.andruhovich.library.exception.InvalidJsonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,7 +34,7 @@ public class JsonConverter {
             });
         } catch (JsonProcessingException e) {
             log.error(String.format(CANNOT_READ_JSON_VALUE, string));
-            throw new RuntimeException(String.format(CANNOT_READ_JSON_VALUE, string));
+            throw new InvalidJsonException(String.format(CANNOT_READ_JSON_VALUE, string));
         }
     }
 
@@ -43,7 +44,7 @@ public class JsonConverter {
             return objectMapper.writeValueAsString(synchronisedOrderContentWrappers);
         } catch (JsonProcessingException e) {
             log.error(String.format(CANNOT_CONVERT_TO_JSON, synchronisedOrderContentWrappers.toString()));
-            throw new RuntimeException(String.format(CANNOT_CONVERT_TO_JSON, synchronisedOrderContentWrappers.toString()));
+            throw new InvalidJsonException(String.format(CANNOT_CONVERT_TO_JSON, synchronisedOrderContentWrappers));
         }
     }
 }

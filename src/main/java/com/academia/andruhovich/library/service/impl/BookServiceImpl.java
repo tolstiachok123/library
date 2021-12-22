@@ -35,13 +35,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getById(Long id) {
-        return mapper.modelToDto(getModelById(id));
+        return mapper.modelToDto(getBookById(id));
     }
 
     @Transactional
     @Override
     public void deleteById(Long id) {
-        getModelById(id);
+        getBookById(id);
         repository.deleteById(id);
     }
 
@@ -57,16 +57,19 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public BookDto update(Long id, BookDto dto) {
-        Book book = getModelById(id);
+        Book book = getBookById(id);
         book = mapper.updateEntityFromDto(dto, book);
         book.setAuthor(authorService.getById(book.getAuthor().getId()));
         book.setTags(tagService.updateOrCreateTags(dto.getTags()));
         return mapper.modelToDto(repository.save(book));
     }
 
-    private Book getModelById(Long id) {
-        return repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
+    @Override
+    public Book getBookById(Long id) {
+        return repository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format(ErrorMessages.RESOURCE_NOT_FOUND, id)));
     }
 
 }

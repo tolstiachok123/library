@@ -46,7 +46,6 @@ public class Book {
 
 	@ManyToOne
 	@JoinColumn(name = "author_id")
-//	@JsonBackReference
 	private Author author;
 
 	@ManyToMany(fetch = FetchType.EAGER)

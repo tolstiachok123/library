@@ -5,6 +5,7 @@ import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.mapper.AuthorMapper;
 import com.academia.andruhovich.library.model.Author;
 import com.academia.andruhovich.library.repository.AuthorRepository;
+import com.academia.andruhovich.library.repository.BookRepository;
 import com.academia.andruhovich.library.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,30 +21,33 @@ import static com.academia.andruhovich.library.exception.ErrorMessages.RESOURCE_
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorMapper mapper;
-    private final AuthorRepository repository;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
     @Override
     public List<AuthorDto> getAll() {
-		return repository.findAll().stream()
-				.map(mapper::modelToDto)
-				.collect(Collectors.toList());
-	}
+        return authorRepository.findAll().stream()
+                .map(mapper::modelToDto)
+                .collect(Collectors.toList());
+    }
 
-	@Override
+    @Override
     public AuthorDto getAuthor(Long id) {
         return mapper.modelToDto(getById(id));
     }
 
-	@Override
-	public void deleteById(Long id) {
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
         getById(id);
-        repository.deleteById(id);
+        bookRepository.deleteAllByAuthorId(id);
+        authorRepository.deleteById(id);
     }
 
     @Transactional
     @Override
     public AuthorDto add(AuthorDto dto) {
-        Author author = repository.save(mapper.dtoToModel(dto));
+        Author author = authorRepository.save(mapper.dtoToModel(dto));
         return mapper.modelToDto(author);
     }
 
@@ -51,14 +55,15 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDto update(Long id, AuthorDto dto) {
         Author author = getById(id);
-        author = repository.save(mapper.updateEntityFromDto(dto, author));
+        author = authorRepository.save(mapper.updateEntityFromDto(dto, author));
         return mapper.modelToDto(author);
     }
 
-
     @Override
     public Author getById(Long id) {
-        return repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format(RESOURCE_NOT_FOUND, id)));
+        return authorRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format(RESOURCE_NOT_FOUND, id)));
     }
 }

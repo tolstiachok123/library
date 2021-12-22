@@ -19,6 +19,7 @@ import java.util.Set;
 
 import static com.academia.andruhovich.library.exception.ErrorMessages.BUSY_EMAIL;
 import static com.academia.andruhovich.library.exception.ErrorMessages.ROLE_NOT_FOUND;
+import static com.academia.andruhovich.library.exception.ErrorMessages.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +41,10 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role role = roleRepository.getByName(DEFAULT_ROLE)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(ROLE_NOT_FOUND, DEFAULT_ROLE)));
+        Role role = roleRepository
+                .getByName(DEFAULT_ROLE)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format(ROLE_NOT_FOUND, DEFAULT_ROLE)));
         user.setRoles(Set.of(role));
 
         return mapper.modelToDto(userRepository.save(user));
@@ -49,7 +52,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrent() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format(USER_NOT_FOUND, email)));
     }
 
 }

@@ -4,6 +4,7 @@ import com.academia.andruhovich.library.dto.AuthorDto;
 import com.academia.andruhovich.library.mapper.AuthorMapper;
 import com.academia.andruhovich.library.model.Author;
 import com.academia.andruhovich.library.repository.AuthorRepository;
+import com.academia.andruhovich.library.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,9 +25,11 @@ class AuthorServiceImplTest {
 
     @Mock
     private AuthorMapper mapper;
-
     @Mock
-    private AuthorRepository repository;
+    private AuthorRepository authorRepository;
+    @Mock
+    private BookRepository bookRepository;
+
 
     private final List<Author> authors = createExistingAuthors();
     private final AuthorDto newAuthorDto = createNewAuthorDto();
@@ -36,13 +39,13 @@ class AuthorServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        service = new AuthorServiceImpl(mapper, repository);
+        service = new AuthorServiceImpl(mapper, bookRepository, authorRepository);
     }
 
     @Test
     void getAll() {
         //given
-        when(repository.findAll()).thenReturn(authors);
+        when(authorRepository.findAll()).thenReturn(authors);
         when(mapper.modelToDto(any())).thenReturn(existingAuthorDto);
         //when
         List<AuthorDto> authors = service.getAll();
@@ -54,7 +57,7 @@ class AuthorServiceImplTest {
     @Test
     void getById() {
         //given
-        when(repository.findById(any())).thenReturn(Optional.of(author));
+        when(authorRepository.findById(any())).thenReturn(Optional.of(author));
         when(mapper.modelToDto(any())).thenReturn(existingAuthorDto);
         //when
         AuthorDto dto = service.getAuthor(author.getId());
@@ -66,7 +69,7 @@ class AuthorServiceImplTest {
     void add() {
         //given
         when(mapper.dtoToModel(any())).thenReturn(author);
-        when(repository.save(any())).thenReturn(author);
+        when(authorRepository.save(any())).thenReturn(author);
         when(mapper.modelToDto(any())).thenReturn(existingAuthorDto);
         //when
         AuthorDto dto = service.add(newAuthorDto);
@@ -77,22 +80,22 @@ class AuthorServiceImplTest {
 	@Test
 	void update() {
         //given
-        when(repository.findById(any())).thenReturn(Optional.of(author));
+        when(authorRepository.findById(any())).thenReturn(Optional.of(author));
         when(mapper.dtoToModel(any())).thenReturn(author);
-        when(repository.save(any())).thenReturn(author);
+        when(authorRepository.save(any())).thenReturn(author);
         //when
         service.update(author.getId(), newAuthorDto);
         //then
-        verify(repository).save(any());
+        verify(authorRepository).save(any());
     }
 
 	@Test
 	void deleteById() {
-		//given
-		when(repository.findById(any())).thenReturn(Optional.of(author));
-		//when
-		service.deleteById(author.getId());
-		//then
-		verify(repository).deleteById(author.getId());
-	}
+        //given
+        when(authorRepository.findById(any())).thenReturn(Optional.of(author));
+        //when
+        service.deleteById(author.getId());
+        //then
+        verify(authorRepository).deleteById(author.getId());
+    }
 }

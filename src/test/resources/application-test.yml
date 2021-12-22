@@ -11,6 +11,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
 
+  h2:
+    console.enabled: true
+    console:
+      path: /h2-console
+
   liquibase:
     enabled: true
     change-log: db/changelog/changelog-master.xml

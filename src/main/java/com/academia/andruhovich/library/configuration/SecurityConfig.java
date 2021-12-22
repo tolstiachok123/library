@@ -1,4 +1,4 @@
-package com.academia.andruhovich.library.configuration.security;
+package com.academia.andruhovich.library.configuration;
 
 import com.academia.andruhovich.library.security.JwtAuthenticationEntryPoint;
 import com.academia.andruhovich.library.security.JwtConfigurer;

@@ -1,1 +1,0 @@
-INSERT INTO author (id, first_name, last_name) VALUES (NULL, 'Jules', 'Verne');

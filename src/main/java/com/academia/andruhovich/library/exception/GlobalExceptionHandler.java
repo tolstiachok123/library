@@ -5,7 +5,6 @@ import com.academia.andruhovich.library.util.DateHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -91,7 +90,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<?> handle(AuthenticationException ex) {
+    public ResponseEntity<Object> handle(AuthenticationException ex) {
         log.error("Caught AuthenticationException: {}", ex.getMessage());
         ExceptionDto exceptionDto = ExceptionDto.builder()
                 .status(UNAUTHORIZED.value())

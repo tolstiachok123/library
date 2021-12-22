@@ -1,7 +1,9 @@
 package com.academia.andruhovich.library.controller;
 
-import com.academia.andruhovich.library.dto.BookDto;
-import com.academia.andruhovich.library.service.BookService;
+import com.academia.andruhovich.library.dto.OrderRequestDto;
+import com.academia.andruhovich.library.dto.OrderResponseDto;
+import com.academia.andruhovich.library.service.OrderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,17 +15,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.List;
+import java.util.Set;
 
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_DELETE;
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_EDIT;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
-import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_EDIT;
-import static com.academia.andruhovich.library.util.BookHelper.createNewBookDto;
 import static com.academia.andruhovich.library.util.Constants.ID;
 import static com.academia.andruhovich.library.util.JsonConvertHelper.convertToJsonString;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getBookDto;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getBookDtos;
+import static com.academia.andruhovich.library.util.JsonConvertHelper.getOrderResponseDto;
+import static com.academia.andruhovich.library.util.JsonConvertHelper.getOrderResponseDtos;
+import static com.academia.andruhovich.library.util.OrderHelper.createNewOrderDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -37,89 +39,88 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @Sql(value = "classpath:/sql/prepareTestDB.sql", executionPhase = BEFORE_TEST_METHOD),
         @Sql(value = "classpath:/sql/clearTestDB.sql", executionPhase = AFTER_TEST_METHOD)
 })
-class BookControllerTest {
+class OrderControllerTest {
 
-    private final BookDto newBookDto = createNewBookDto();
+    public static OrderRequestDto newOrderDto = createNewOrderDto();
 
     @Autowired
-    BookService bookService;
+    OrderService service;
 
     @Autowired
     private MockMvc mockMvc;
 
-
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_READ, password = "12356")
     @Test
-    void getBooks() throws Exception {
+    void getOrders() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/books")
+                        .get("/api/orders")
                         .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        List<BookDto> bookDtos = getBookDtos(response);
+        Set<OrderResponseDto> orderResponseDtos = getOrderResponseDtos(response);
 
-        BookDto bookDto = bookDtos.get(0);
-        assertEquals(ID, bookDto.getId());
-        assertEquals(newBookDto.getTitle(), bookDto.getTitle());
+        OrderResponseDto orderResponseDto = orderResponseDtos.iterator().next();
+        assertEquals(ID, orderResponseDto.getId());
+        assertEquals(newOrderDto.getStatus(), orderResponseDto.getStatus());
     }
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_READ, password = "12356")
     @Test
-    void getBook() throws Exception {
+    void getOrder() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/books/{id}", ID)
+                        .get("/api/orders/{id}", ID)
                         .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        BookDto bookDto = getBookDto(response);
+        OrderResponseDto orderResponseDto = getOrderResponseDto(response);
 
-        assertEquals(ID, bookDto.getId());
-        assertEquals(newBookDto.getTitle(), bookDto.getTitle());
+        assertEquals(ID, orderResponseDto.getId());
+        assertEquals(newOrderDto.getStatus(), orderResponseDto.getStatus());
     }
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_DELETE, password = "12356")
     @Test
-    void deleteBook() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/books/{id}", ID))
+    void deleteOrder() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/orders/{id}", ID))
                 .andExpect(status().isNoContent());
     }
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_WRITE, password = "12356")
     @Test
-    void createBook() throws Exception {
+    void createOrder() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/books")
-                        .content(convertToJsonString(newBookDto))
+                        .post("/api/orders")
+                        .content(convertToJsonString(newOrderDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
-        BookDto bookDto = getBookDto(response);
+        OrderResponseDto orderResponseDto = getOrderResponseDto(response);
 
-        assertEquals(2L, bookDto.getId());
-        assertEquals(newBookDto.getTitle(), bookDto.getTitle());
+        assertEquals(2L, orderResponseDto.getId());
+        assertEquals(newOrderDto.getStatus(), orderResponseDto.getStatus());
     }
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_EDIT, password = "12356")
     @Test
-    void updateBook() throws Exception {
+    void updateOrder() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/books/{id}", ID)
-                        .content(convertToJsonString(newBookDto))
+                        .put("/api/orders/{id}", ID)
+                        .content(convertToJsonString(newOrderDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        BookDto bookDto = getBookDto(response);
+        OrderResponseDto orderResponseDto = getOrderResponseDto(response);
 
-        assertEquals(ID, bookDto.getId());
-        assertEquals(newBookDto.getTitle(), bookDto.getTitle());
+        assertEquals(ID, orderResponseDto.getId());
+        assertEquals(newOrderDto.getStatus(), orderResponseDto.getStatus());
     }
 
 }
