@@ -15,8 +15,6 @@ import lombok.Data;
 
 import java.io.IOException;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
@@ -42,7 +40,7 @@ public class JsonConvertHelper {
     }
 
     public static AuthResponseDto getAuthResponseDto(String response) {
-        AuthResponseDto authResponseDto = new AuthResponseDto();
+        AuthResponseDto authResponseDto;
         try {
             JsonNode responseBody = objectMapper.readTree(response);
             authResponseDto = objectMapper.convertValue(responseBody, new TypeReference<>() {
@@ -54,7 +52,7 @@ public class JsonConvertHelper {
     }
 
     public static AuthorDto getAuthorDto(String response) {
-        AuthorDto authorDto = new AuthorDto();
+        AuthorDto authorDto;
         try {
             JsonNode responseBody = objectMapper.readTree(response);
             authorDto = objectMapper.convertValue(responseBody, new TypeReference<>() {
@@ -66,7 +64,7 @@ public class JsonConvertHelper {
     }
 
     public static List<AuthorDto> getAuthorDtos(String response) {
-        List<AuthorDto> authors = new ArrayList<>();
+        List<AuthorDto> authors;
         try {
             JsonNode responseBody = objectMapper.readTree(response);
             authors = objectMapper.convertValue(responseBody, new TypeReference<>() {
@@ -78,7 +76,7 @@ public class JsonConvertHelper {
     }
 
     public static BookDto getBookDto(String response) {
-        BookDto bookDto = new BookDto();
+        BookDto bookDto;
         try {
             JsonNode responseBody = objectMapper.readTree(response);
             bookDto = objectMapper.convertValue(responseBody, new TypeReference<>() {
@@ -90,7 +88,7 @@ public class JsonConvertHelper {
     }
 
     public static List<BookDto> getBookDtos(String response) {
-        List<BookDto> books = new ArrayList<>();
+        List<BookDto> books;
         try {
             JsonNode responseBody = objectMapper.readTree(response);
             books = objectMapper.convertValue(responseBody, new TypeReference<>() {
@@ -102,7 +100,7 @@ public class JsonConvertHelper {
     }
 
     public static OrderResponseDto getOrderResponseDto(String response) {
-        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        OrderResponseDto orderResponseDto;
         try {
             JsonNode responseBody = objectMapper.readTree(response);
             orderResponseDto = objectMapper.convertValue(responseBody, new TypeReference<>() {
@@ -114,7 +112,7 @@ public class JsonConvertHelper {
     }
 
     public static Set<OrderResponseDto> getOrderResponseDtos(String response) {
-        Set<OrderResponseDto> orders = new HashSet<>();
+        Set<OrderResponseDto> orders;
         try {
             JsonNode responseBody = objectMapper.readTree(response);
             orders = objectMapper.convertValue(responseBody, new TypeReference<>() {

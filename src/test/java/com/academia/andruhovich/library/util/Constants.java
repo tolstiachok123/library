@@ -11,8 +11,6 @@ public class Constants {
 
     public static final Long ID = 1L;
 
-    public static final ZonedDateTime NOW = ZonedDateTime.now(ZoneId.of("Europe/Minsk"));
-
     public static final String FIRST_NAME = "Jules";
     public static final String LAST_NAME = "Verne";
 

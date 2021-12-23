@@ -10,9 +10,9 @@ import java.util.Set;
 
 import static com.academia.andruhovich.library.util.Constants.HISTORY;
 import static com.academia.andruhovich.library.util.Constants.ID;
-import static com.academia.andruhovich.library.util.Constants.NOW;
 import static com.academia.andruhovich.library.util.Constants.ORDER_CONTENT;
 import static com.academia.andruhovich.library.util.Constants.PRICE;
+import static com.academia.andruhovich.library.util.DateHelper.currentDate;
 import static com.academia.andruhovich.library.util.UserHelper.createExistingUser;
 
 public class OrderHelper {
@@ -22,11 +22,10 @@ public class OrderHelper {
         order.setId(ID);
         order.setUser(createExistingUser());
         order.setTotalPrice(PRICE);
-//        order.setStatus(OrderStatus.PAID);
         order.setStatus(OrderStatus.DRAFT);
         order.setHistory(HISTORY);
-        order.setUpdatedAt(NOW);
-        order.setCreatedAt(NOW);
+        order.setUpdatedAt(currentDate());
+        order.setCreatedAt(currentDate());
         return order;
     }
 

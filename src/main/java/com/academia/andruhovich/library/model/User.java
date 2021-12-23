@@ -43,11 +43,6 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_order", joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "order_id")})
-//    private Set<Order> orders = new HashSet<>();
-
     @Column(name = "password")
     private String password;
 
