@@ -178,10 +178,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     protected Order recalculatePriceAndHistory(Order order) {
-        if (order.getHistory().startsWith("\"")) {
-            order.setHistory(order.getHistory().replace("\\", ""));
-            order.setHistory(order.getHistory().substring(1, order.getHistory().length() - 1));
-        }
+        replaceDelimiter(order);
 
         Set<OrderContentWrapper> orderContentWrappers = jsonConverter.jsonStringToCollection(order.getHistory());
         List<Long> booksIds = orderContentWrappers.stream()
@@ -204,6 +201,15 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(calculateTotalPrice(synchronisedOrderContentWrappers, synchronisedBooks));
 
         return orderRepository.save(order);
+    }
+
+    private void replaceDelimiter(Order order) {
+        if (order.getHistory().startsWith("\"")) {
+            String substring = order.getHistory()
+                    .replace("\\", "")
+                    .substring(1, order.getHistory().length() - 1);
+            order.setHistory(substring);
+        }
     }
 
 }

@@ -5,6 +5,8 @@ import com.academia.andruhovich.library.dto.AuthResponseDto;
 import com.academia.andruhovich.library.dto.UserDto;
 import com.academia.andruhovich.library.security.JwtTokenProvider;
 import com.academia.andruhovich.library.service.UserService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,6 +48,8 @@ class AuthControllerTest {
     UserService service;
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
 
 
     @Test
@@ -58,7 +62,7 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        AuthResponseDto authResponseDto = getAuthResponseDto(response);
+        AuthResponseDto authResponseDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(EMAIL, authResponseDto.getEmail());
     }
@@ -74,7 +78,7 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        AuthResponseDto authResponseDto = getAuthResponseDto(response);
+        AuthResponseDto authResponseDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(UNREGISTERED_EMAIL, authResponseDto.getEmail());
     }

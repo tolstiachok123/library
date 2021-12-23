@@ -3,6 +3,8 @@ package com.academia.andruhovich.library.controller;
 import com.academia.andruhovich.library.dto.OrderRequestDto;
 import com.academia.andruhovich.library.dto.OrderResponseDto;
 import com.academia.andruhovich.library.service.OrderService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,7 +45,8 @@ class OrderControllerTest {
 
     @Autowired
     OrderService service;
-
+    @Autowired
+    ObjectMapper objectMapper;
     @Autowired
     private MockMvc mockMvc;
 
@@ -57,7 +60,7 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        Set<OrderResponseDto> orderResponseDtos = getOrderResponseDtos(response);
+        Set<OrderResponseDto> orderResponseDtos = objectMapper.readValue(response, new TypeReference<>() {});
 
         OrderResponseDto orderResponseDto = orderResponseDtos.iterator().next();
         assertEquals(ID, orderResponseDto.getId());
@@ -74,7 +77,7 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        OrderResponseDto orderResponseDto = getOrderResponseDto(response);
+        OrderResponseDto orderResponseDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(ID, orderResponseDto.getId());
         assertEquals(newOrderDto.getStatus(), orderResponseDto.getStatus());
@@ -98,7 +101,7 @@ class OrderControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
-        OrderResponseDto orderResponseDto = getOrderResponseDto(response);
+        OrderResponseDto orderResponseDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(2L, orderResponseDto.getId());
         assertEquals(newOrderDto.getStatus(), orderResponseDto.getStatus());
@@ -115,7 +118,7 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        OrderResponseDto orderResponseDto = getOrderResponseDto(response);
+        OrderResponseDto orderResponseDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(ID, orderResponseDto.getId());
         assertEquals(newOrderDto.getStatus(), orderResponseDto.getStatus());

@@ -2,6 +2,8 @@ package com.academia.andruhovich.library.controller;
 
 import com.academia.andruhovich.library.dto.BookDto;
 import com.academia.andruhovich.library.service.BookService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -45,6 +47,8 @@ class BookControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
 
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_READ, password = "12356")
@@ -57,7 +61,7 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        List<BookDto> bookDtos = getBookDtos(response);
+        List<BookDto> bookDtos = objectMapper.readValue(response, new TypeReference<>() {});
 
         BookDto bookDto = bookDtos.get(0);
         assertEquals(ID, bookDto.getId());
@@ -74,7 +78,7 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        BookDto bookDto = getBookDto(response);
+        BookDto bookDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(ID, bookDto.getId());
         assertEquals(newBookDto.getTitle(), bookDto.getTitle());
@@ -98,7 +102,7 @@ class BookControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
-        BookDto bookDto = getBookDto(response);
+        BookDto bookDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(2L, bookDto.getId());
         assertEquals(newBookDto.getTitle(), bookDto.getTitle());
@@ -115,7 +119,7 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        BookDto bookDto = getBookDto(response);
+        BookDto bookDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(ID, bookDto.getId());
         assertEquals(newBookDto.getTitle(), bookDto.getTitle());

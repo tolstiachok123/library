@@ -2,6 +2,8 @@ package com.academia.andruhovich.library.controller;
 
 import com.academia.andruhovich.library.dto.AuthorDto;
 import com.academia.andruhovich.library.service.AuthorService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,9 +44,10 @@ class AuthorControllerTest {
 
     @Autowired
     AuthorService service;
-
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
 
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_READ, password = "12356")
@@ -57,7 +60,7 @@ class AuthorControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        List<AuthorDto> authors = getAuthorDtos(response);
+        List<AuthorDto> authors = objectMapper.readValue(response, new TypeReference<>() {});
 
         AuthorDto authorDto = authors.get(0);
         assertEquals(ID, authorDto.getId());
@@ -75,7 +78,7 @@ class AuthorControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        AuthorDto authorDto = getAuthorDto(response);
+        AuthorDto authorDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(ID, authorDto.getId());
         assertEquals(newAuthorDto.getFirstName(), authorDto.getFirstName());
@@ -100,7 +103,7 @@ class AuthorControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
-        AuthorDto authorDto = getAuthorDto(response);
+        AuthorDto authorDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(3L, authorDto.getId());
         assertEquals(newAuthorDto.getFirstName(), authorDto.getFirstName());
@@ -118,7 +121,7 @@ class AuthorControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        AuthorDto authorDto = getAuthorDto(response);
+        AuthorDto authorDto = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertEquals(ID, authorDto.getId());
         assertEquals(newAuthorDto.getFirstName(), authorDto.getFirstName());
