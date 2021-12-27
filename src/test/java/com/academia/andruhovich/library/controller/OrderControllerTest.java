@@ -22,9 +22,6 @@ import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTH
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
 import static com.academia.andruhovich.library.util.Constants.ID;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.convertToJsonString;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getOrderResponseDto;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getOrderResponseDtos;
 import static com.academia.andruhovich.library.util.OrderHelper.createNewOrderDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -95,7 +92,7 @@ class OrderControllerTest {
     void createOrder() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/orders")
-                        .content(convertToJsonString(newOrderDto))
+                        .content(objectMapper.writeValueAsString(newOrderDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -112,7 +109,7 @@ class OrderControllerTest {
     void updateOrder() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/orders/{id}", ID)
-                        .content(convertToJsonString(newOrderDto))
+                        .content(objectMapper.writeValueAsString(newOrderDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())

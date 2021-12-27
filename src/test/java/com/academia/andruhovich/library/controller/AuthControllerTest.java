@@ -20,8 +20,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static com.academia.andruhovich.library.util.AuthRequestHelper.createExistingUserAuthRequestDto;
 import static com.academia.andruhovich.library.util.Constants.EMAIL;
 import static com.academia.andruhovich.library.util.Constants.UNREGISTERED_EMAIL;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.convertToJsonString;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getAuthResponseDto;
 import static com.academia.andruhovich.library.util.UserHelper.createUnregisteredUserDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -56,7 +54,7 @@ class AuthControllerTest {
     void login() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/auth/login")
-                        .content(convertToJsonString(existingUserAuthRequestDto))
+                        .content(objectMapper.writeValueAsString(existingUserAuthRequestDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -72,7 +70,7 @@ class AuthControllerTest {
     void register() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/auth/registration")
-                        .content(convertToJsonString(newUserDto))
+                        .content(objectMapper.writeValueAsString(newUserDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())

@@ -22,9 +22,6 @@ import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTH
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_EDIT;
 import static com.academia.andruhovich.library.util.BookHelper.createNewBookDto;
 import static com.academia.andruhovich.library.util.Constants.ID;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.convertToJsonString;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getBookDto;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getBookDtos;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -96,7 +93,7 @@ class BookControllerTest {
     void createBook() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/books")
-                        .content(convertToJsonString(newBookDto))
+                        .content(objectMapper.writeValueAsString(newBookDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -113,7 +110,7 @@ class BookControllerTest {
     void updateBook() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/books/{id}", ID)
-                        .content(convertToJsonString(newBookDto))
+                        .content(objectMapper.writeValueAsString(newBookDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())

@@ -54,6 +54,7 @@ public class OrderServiceImpl implements OrderService {
         Set<Order> orders = orderRepository.getAllByUserId(user.getId());
         return orders.stream()
                 .map(this::isNeedRecalculate)
+                .map(orderRepository::save)
                 .map(orderMapper::modelToDto)
                 .collect(Collectors.toSet());
     }
@@ -64,11 +65,9 @@ public class OrderServiceImpl implements OrderService {
         User user = userService.getCurrent();
         Order order = orderRepository.getByIdAndUserId(id, user.getId()).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(ORDER_NOT_FOUND, id)));
-        if (DRAFT.equals(order.getStatus())) {
-            order = recalculatePriceAndHistory(order);
-        }
+        order = isNeedRecalculate(order);
 
-        return orderMapper.modelToDto(order);
+        return orderMapper.modelToDto(orderRepository.save(order));
     }
 
     @Transactional
@@ -200,16 +199,17 @@ public class OrderServiceImpl implements OrderService {
         order.setHistory(jsonConverter.collectionToJsonString(synchronisedOrderContentWrappers));
         order.setTotalPrice(calculateTotalPrice(synchronisedOrderContentWrappers, synchronisedBooks));
 
-        return orderRepository.save(order);
+        return order;
     }
 
-    private void replaceDelimiter(Order order) {
+    protected Order replaceDelimiter(Order order) {
         if (order.getHistory().startsWith("\"")) {
             String substring = order.getHistory()
-                    .replace("\\", "")
-                    .substring(1, order.getHistory().length() - 1);
+                    .substring(1, order.getHistory().length() - 1)
+                    .replace("\\", "");
             order.setHistory(substring);
         }
+        return order;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.academia.andruhovich.library.service.impl;
 
 import com.academia.andruhovich.library.dto.UserDto;
-import com.academia.andruhovich.library.exception.BusyEmailException;
+import com.academia.andruhovich.library.exception.DuplicatedEmailException;
 import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.mapper.UserMapper;
 import com.academia.andruhovich.library.model.Role;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     public UserDto add(UserDto dto) {
         User user = mapper.dtoToModel(dto);
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new BusyEmailException(String.format(BUSY_EMAIL, user.getEmail()));
+            throw new DuplicatedEmailException(String.format(BUSY_EMAIL, user.getEmail()));
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

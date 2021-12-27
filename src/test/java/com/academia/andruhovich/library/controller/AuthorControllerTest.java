@@ -22,9 +22,6 @@ import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTH
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_EDIT;
 import static com.academia.andruhovich.library.util.AuthorHelper.createNewAuthorDto;
 import static com.academia.andruhovich.library.util.Constants.ID;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.convertToJsonString;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getAuthorDto;
-import static com.academia.andruhovich.library.util.JsonConvertHelper.getAuthorDtos;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -97,7 +94,7 @@ class AuthorControllerTest {
     void createAuthor() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/authors")
-                        .content(convertToJsonString(newAuthorDto))
+                        .content(objectMapper.writeValueAsString(newAuthorDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -115,7 +112,7 @@ class AuthorControllerTest {
     void updateAuthor() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/authors/{id}", ID)
-                        .content(convertToJsonString(newAuthorDto))
+                        .content(objectMapper.writeValueAsString(newAuthorDto))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())

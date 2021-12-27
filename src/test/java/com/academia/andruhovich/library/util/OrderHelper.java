@@ -8,6 +8,7 @@ import com.academia.andruhovich.library.model.OrderStatus;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.academia.andruhovich.library.util.Constants.DAMAGED_HISTORY;
 import static com.academia.andruhovich.library.util.Constants.HISTORY;
 import static com.academia.andruhovich.library.util.Constants.ID;
 import static com.academia.andruhovich.library.util.Constants.ORDER_CONTENT;
@@ -56,5 +57,17 @@ public class OrderHelper {
         orderRequestDto.setStatus(OrderStatus.DRAFT);
         orderRequestDto.setOrderContent(ORDER_CONTENT);
         return orderRequestDto;
+    }
+
+    public static Order createDamagedOrder() {
+        Order order = new Order();
+        order.setId(ID);
+        order.setUser(createExistingUser());
+        order.setTotalPrice(PRICE);
+        order.setStatus(OrderStatus.DRAFT);
+        order.setHistory(DAMAGED_HISTORY);
+        order.setUpdatedAt(currentDate());
+        order.setCreatedAt(currentDate());
+        return order;
     }
 }

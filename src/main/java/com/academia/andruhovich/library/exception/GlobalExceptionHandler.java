@@ -13,21 +13,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.academia.andruhovich.library.exception.ErrorMessages.INVALID_METHOD_ARGUMENT;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(value = Throwable.class)
-    public ResponseEntity<Void> handle(Throwable throwable) {
-        log.error("Caught unhandled exception: {}", throwable.getMessage());
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
-    }
 
     @ExceptionHandler(value = InvalidJsonException.class)
     public ResponseEntity<Object> handle(InvalidJsonException ex) {
@@ -53,16 +47,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(UNPROCESSABLE_ENTITY).body(exceptionDto);
     }
 
-    @ExceptionHandler(value = BusyEmailException.class)
-    public ResponseEntity<Object> handle(BusyEmailException ex) {
-        log.error("Caught BusyEmailException: {}", ex.getMessage());
+    @ExceptionHandler(value = DuplicatedEmailException.class)
+    public ResponseEntity<Object> handle(DuplicatedEmailException ex) {
+        log.error("Caught DuplicatedEmailException: {}", ex.getMessage());
         ExceptionDto exceptionDto = ExceptionDto.builder()
-                .status(BAD_REQUEST.value())
-                .error(BAD_REQUEST.getReasonPhrase())
+                .status(CONFLICT.value())
+                .error(CONFLICT.getReasonPhrase())
                 .message(ex.getMessage())
                 .time(DateHelper.currentDate())
                 .build();
-        return ResponseEntity.status(BAD_REQUEST).body(exceptionDto);
+        return ResponseEntity.status(CONFLICT).body(exceptionDto);
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)

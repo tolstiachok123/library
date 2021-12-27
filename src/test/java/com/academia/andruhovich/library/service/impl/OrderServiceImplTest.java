@@ -11,7 +11,6 @@ import com.academia.andruhovich.library.repository.BookRepository;
 import com.academia.andruhovich.library.repository.OrderRepository;
 import com.academia.andruhovich.library.service.BookService;
 import com.academia.andruhovich.library.service.UserService;
-import com.academia.andruhovich.library.util.JsonConvertHelper;
 import com.academia.andruhovich.library.util.JsonConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +23,8 @@ import java.util.Set;
 
 import static com.academia.andruhovich.library.util.BookHelper.createExistingBook;
 import static com.academia.andruhovich.library.util.BookHelper.createExistingBooks;
+import static com.academia.andruhovich.library.util.Constants.HISTORY;
+import static com.academia.andruhovich.library.util.OrderHelper.createDamagedOrder;
 import static com.academia.andruhovich.library.util.OrderHelper.createExistingOrder;
 import static com.academia.andruhovich.library.util.OrderHelper.createExistingOrderResponseDto;
 import static com.academia.andruhovich.library.util.OrderHelper.createExistingOrders;
@@ -55,6 +56,7 @@ class OrderServiceImplTest {
 
     private final User existingUser = createExistingUser();
     private final Order existingOrder = createExistingOrder();
+    private final Order damagedOrder = createDamagedOrder();
     private final OrderResponseDto existingOrderResponseDto = createExistingOrderResponseDto();
     private final Set<Order> existingOrders = createExistingOrders();
     private final List<Book> existingBooks = createExistingBooks();
@@ -127,6 +129,14 @@ class OrderServiceImplTest {
         OrderResponseDto orderResponseDto = service.update(newOrderRequestDto.getId(), newOrderRequestDto);
         //then
         assertEquals(orderResponseDto.getId(), existingOrderResponseDto.getId());
+    }
+
+    @Test
+    void replaceDelimiter() {
+        //when
+        Order fixedOrder = service.replaceDelimiter(damagedOrder);
+        //then
+        assertEquals(HISTORY, fixedOrder.getHistory());
     }
 
 }
