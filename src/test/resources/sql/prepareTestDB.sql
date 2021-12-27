@@ -1,4 +1,4 @@
-INSERT INTO tags (id, name)
+INSERT INTO `tag` (id, name)
 VALUES (1, 'Horror');
 
 INSERT INTO author (id, first_name, last_name)
@@ -33,7 +33,7 @@ values (1, 'admin_mock', '$2y$12$Ol2wWiJjCsY.u3C7H8u3I.xB9FWRZdRF/qppePPnT75rWKQ
 INSERT INTO user_role (user_id, role_id)
 VALUES (1, 1);
 
-INSERT INTO orders (id, status, history, user_id)
+INSERT INTO `order` (id, status, history, user_id)
 VALUES (NULL, 'DRAFT',
         '[{"book": {"id": 1, "tags": [{"id": 1, "name": "Horror"}], "price": 45.00, "title": "Dagon", "author": {"id": 1, "lastName": "Jules", "firstName": "Verne"}, "imageUrl": "url", "createdAt": "2021-11-08T02:34:47+03:00[Europe/Minsk]", "updatedAt": "2021-11-08T02:34:47+03:00[Europe/Minsk]"}, "quantity": 1}]',
         1);

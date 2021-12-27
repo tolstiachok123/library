@@ -1,14 +1,14 @@
 DELETE
-FROM orders;
-ALTER TABLE orders
+FROM `order`;
+ALTER TABLE `order`
     ALTER COLUMN id RESTART WITH 1;
 
 DELETE
 FROM book_tags;
 
 DELETE
-FROM tags;
-ALTER TABLE tags
+FROM `tag`;
+ALTER TABLE `tag`
     ALTER COLUMN id RESTART WITH 1;
 
 DELETE
