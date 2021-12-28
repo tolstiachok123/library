@@ -1,6 +1,5 @@
 package com.academia.andruhovich.library.service.impl;
 
-import com.academia.andruhovich.library.dto.TagDto;
 import com.academia.andruhovich.library.mapper.TagMapper;
 import com.academia.andruhovich.library.model.Tag;
 import com.academia.andruhovich.library.repository.TagRepository;
@@ -28,10 +27,6 @@ class TagServiceImplTest {
     @Mock
     private TagMapper mapper;
 
-    private final Tag existingTag = createExistingTag();
-    private final Tag newTag = createNewTag();
-    private final Set<TagDto> newTagDtos = createNewTagDtos();
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -41,10 +36,10 @@ class TagServiceImplTest {
     @Test
     void updateOrCreateTags() {
         //given
-        when(mapper.dtoToModel(any())).thenReturn(newTag);
-        when(repository.findByName(any())).thenReturn(Optional.of(existingTag));
+        when(mapper.dtoToModel(any())).thenReturn(createNewTag());
+        when(repository.findByName(any())).thenReturn(Optional.of(createExistingTag()));
         //when
-        Set<Tag> tags = service.updateOrCreateTags(newTagDtos);
+        Set<Tag> tags = service.updateOrCreateTags(createNewTagDtos());
         //then
         tags.forEach(tag -> assertNotNull(tag.getId()));
     }

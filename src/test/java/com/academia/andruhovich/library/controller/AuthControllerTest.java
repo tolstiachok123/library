@@ -1,8 +1,6 @@
 package com.academia.andruhovich.library.controller;
 
-import com.academia.andruhovich.library.dto.AuthRequestDto;
 import com.academia.andruhovich.library.dto.AuthResponseDto;
-import com.academia.andruhovich.library.dto.UserDto;
 import com.academia.andruhovich.library.security.JwtTokenProvider;
 import com.academia.andruhovich.library.service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,9 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 class AuthControllerTest {
 
-    private final UserDto newUserDto = createUnregisteredUserDto();
-    private final AuthRequestDto existingUserAuthRequestDto = createExistingUserAuthRequestDto();
-
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
@@ -54,7 +49,7 @@ class AuthControllerTest {
     void login() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/auth/login")
-                        .content(objectMapper.writeValueAsString(existingUserAuthRequestDto))
+                        .content(objectMapper.writeValueAsString(createExistingUserAuthRequestDto()))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -70,7 +65,7 @@ class AuthControllerTest {
     void register() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/auth/registration")
-                        .content(objectMapper.writeValueAsString(newUserDto))
+                        .content(objectMapper.writeValueAsString(createUnregisteredUserDto()))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())

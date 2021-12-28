@@ -43,9 +43,7 @@ class BookServiceImplTest {
     @Mock
     private TagService tagService;
 
-    private final List<Book> existingBooks = createExistingBooks();
     private final Book existingBook = createExistingBook();
-    private final Book newBook = createNewBook();
     private final BookDto existingBookDto = createExistingBookDto();
     private final BookDto newBookDto = createNewBookDto();
     private final Author existingAuthor = createExistingAuthor();
@@ -60,7 +58,7 @@ class BookServiceImplTest {
     @Test
     void getAll() {
         //given
-        when(repository.findAll()).thenReturn(existingBooks);
+        when(repository.findAll()).thenReturn(createExistingBooks());
         when(mapper.modelToDto(any())).thenReturn(existingBookDto);
         //when
         List<BookDto> books = service.getAll();
@@ -93,7 +91,7 @@ class BookServiceImplTest {
     @Test
     void add() {
         //given
-        when(mapper.dtoToModel(any())).thenReturn(newBook);
+        when(mapper.dtoToModel(any())).thenReturn(createNewBook());
         when(repository.save(any())).thenReturn(existingBook);
         when(authorService.getById(any())).thenReturn(existingAuthor);
         when(tagService.updateOrCreateTags(any())).thenReturn(existingTags);

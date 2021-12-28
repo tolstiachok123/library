@@ -17,7 +17,8 @@ import static com.academia.andruhovich.library.util.AuthorHelper.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class AuthorServiceImplTest {
 
@@ -31,7 +32,6 @@ class AuthorServiceImplTest {
     private BookRepository bookRepository;
 
 
-    private final List<Author> authors = createExistingAuthors();
     private final AuthorDto newAuthorDto = createNewAuthorDto();
     private final AuthorDto existingAuthorDto = createExistingAuthorDto();
     private final Author author = createExistingAuthor();
@@ -45,7 +45,7 @@ class AuthorServiceImplTest {
     @Test
     void getAll() {
         //given
-        when(authorRepository.findAll()).thenReturn(authors);
+        when(authorRepository.findAll()).thenReturn(createExistingAuthors());
         when(mapper.modelToDto(any())).thenReturn(existingAuthorDto);
         //when
         List<AuthorDto> authors = service.getAll();

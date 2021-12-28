@@ -4,7 +4,6 @@ import com.academia.andruhovich.library.dto.OrderRequestDto;
 import com.academia.andruhovich.library.dto.OrderResponseDto;
 import com.academia.andruhovich.library.mapper.BookMapper;
 import com.academia.andruhovich.library.mapper.OrderMapper;
-import com.academia.andruhovich.library.model.Book;
 import com.academia.andruhovich.library.model.Order;
 import com.academia.andruhovich.library.model.User;
 import com.academia.andruhovich.library.repository.BookRepository;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -56,12 +54,8 @@ class OrderServiceImplTest {
 
     private final User existingUser = createExistingUser();
     private final Order existingOrder = createExistingOrder();
-    private final Order damagedOrder = createDamagedOrder();
     private final OrderResponseDto existingOrderResponseDto = createExistingOrderResponseDto();
-    private final Set<Order> existingOrders = createExistingOrders();
-    private final List<Book> existingBooks = createExistingBooks();
     private final OrderRequestDto newOrderRequestDto = createNewOrderRequestDto();
-    private final Book existingBook = createExistingBook();
 
     @BeforeEach
     void setUp() {
@@ -85,7 +79,7 @@ class OrderServiceImplTest {
     void getAll() {
         //given
         when(userService.getCurrent()).thenReturn(existingUser);
-        when(orderRepository.getAllByUserId(any())).thenReturn(existingOrders);
+        when(orderRepository.getAllByUserId(any())).thenReturn(createExistingOrders());
         when(orderMapper.modelToDto(any())).thenReturn(existingOrderResponseDto);
         //when
         Set<OrderResponseDto> orderResponseDtos = service.getAll();
@@ -108,7 +102,7 @@ class OrderServiceImplTest {
     void create() {
         //given
         when(userService.getCurrent()).thenReturn(existingUser);
-        when(bookRepository.findAllById(any())).thenReturn(existingBooks);
+        when(bookRepository.findAllById(any())).thenReturn(createExistingBooks());
         when(orderRepository.save(any())).thenReturn(existingOrder);
         when(orderMapper.modelToDto(any())).thenReturn(existingOrderResponseDto);
         //when
@@ -122,7 +116,7 @@ class OrderServiceImplTest {
         //given
         when(userService.getCurrent()).thenReturn(existingUser);
         when(orderRepository.getByIdAndUserId(any(), any())).thenReturn(Optional.of(existingOrder));
-        when(bookService.getBookById(any())).thenReturn(existingBook);
+        when(bookService.getBookById(any())).thenReturn(createExistingBook());
         when(orderRepository.save(any())).thenReturn(existingOrder);
         when(orderMapper.modelToDto(any())).thenReturn(existingOrderResponseDto);
         //when
@@ -134,7 +128,7 @@ class OrderServiceImplTest {
     @Test
     void replaceDelimiter() {
         //when
-        Order fixedOrder = service.replaceDelimiter(damagedOrder);
+        Order fixedOrder = service.replaceDelimiter(createDamagedOrder());
         //then
         assertEquals(HISTORY, fixedOrder.getHistory());
     }
