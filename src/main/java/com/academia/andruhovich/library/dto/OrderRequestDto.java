@@ -1,20 +1,19 @@
 package com.academia.andruhovich.library.dto;
 
+import com.academia.andruhovich.library.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagDto {
+public class OrderRequestDto {
 
-    @Min(1)
     private Long id;
-    @Size(min = 4, max = 255)
-    private String name;
+    private Map<Long, Integer> orderContent;
+    private OrderStatus status;
 
 }

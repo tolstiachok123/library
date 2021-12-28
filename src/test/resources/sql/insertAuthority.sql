@@ -1,1 +1,0 @@
-INSERT INTO authority (id, name) VALUES (NULL, 'read'), (NULL, 'write'), (NULL, 'delete'), (NULL, 'edit');

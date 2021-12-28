@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -14,9 +14,9 @@ public class AuthorDto {
 
 	@Min(1)
 	private Long id;
-	@Pattern(regexp = "[A-ZА-Я][a-zа-я]*[-\\s]?([A-ZА-Я][a-zа-я]*[-\\s]?)*")
+	@Size(min = 1, max = 255)
 	private String firstName;
-	@Pattern(regexp = "[A-ZА-Я][a-zа-я]*[-\\s]?([A-ZА-Я][a-zа-я]*[-\\s]?)*")
+	@Size(min = 1, max = 255)
 	private String lastName;
 
 }

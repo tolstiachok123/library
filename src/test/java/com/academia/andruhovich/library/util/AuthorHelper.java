@@ -36,9 +36,9 @@ public class AuthorHelper {
 	}
 
 	public static List<Author> createExistingAuthors() {
-		List<Author> authors = new ArrayList<>();
-		authors.add(new Author(ID, FIRST_NAME, LAST_NAME, null));
-		return authors;
-	}
+        List<Author> authors = new ArrayList<>();
+        authors.add(new Author(ID, FIRST_NAME, LAST_NAME));
+        return authors;
+    }
 
 }

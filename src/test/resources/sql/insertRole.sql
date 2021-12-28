@@ -1,1 +1,0 @@
-INSERT INTO role (id, name) VALUES (NULL, 'USER');

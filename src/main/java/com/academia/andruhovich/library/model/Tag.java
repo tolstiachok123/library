@@ -1,5 +1,6 @@
 package com.academia.andruhovich.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tags")
+@Table(name = "`tag`")
 public class Tag {
 
     @Id
@@ -29,6 +30,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
     private List<Book> books = new ArrayList<>();
 
     public Tag(String name) {

@@ -3,8 +3,6 @@ package com.academia.andruhovich.library.util;
 import com.academia.andruhovich.library.dto.BookDto;
 import com.academia.andruhovich.library.model.Book;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,7 @@ import static com.academia.andruhovich.library.util.Constants.ID;
 import static com.academia.andruhovich.library.util.Constants.TITLE;
 import static com.academia.andruhovich.library.util.Constants.PRICE;
 import static com.academia.andruhovich.library.util.Constants.IMAGE_URL;
-import static com.academia.andruhovich.library.util.Constants.MINSK;
+import static com.academia.andruhovich.library.util.DateHelper.currentDate;
 import static com.academia.andruhovich.library.util.TagHelper.createExistingTags;
 import static com.academia.andruhovich.library.util.TagHelper.createNewTagDtos;
 
@@ -28,8 +26,8 @@ public class BookHelper {
         book.setImageUrl(IMAGE_URL);
         book.setAuthor(createExistingAuthor());
         book.setTags(createExistingTags());
-        book.setCreatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
-        book.setUpdatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
+        book.setCreatedAt(currentDate());
+        book.setUpdatedAt(currentDate());
         return book;
     }
 
@@ -40,8 +38,8 @@ public class BookHelper {
         book.setImageUrl(IMAGE_URL);
         book.setAuthor(createExistingAuthor());
         book.setTags(createExistingTags());
-        book.setCreatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
-        book.setUpdatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
+        book.setCreatedAt(currentDate());
+        book.setUpdatedAt(currentDate());
         return book;
     }
 
@@ -54,8 +52,8 @@ public class BookHelper {
         book.setImageUrl(IMAGE_URL);
         book.setAuthor(createExistingAuthor());
         book.setTags(createExistingTags());
-        book.setCreatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
-        book.setUpdatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
+        book.setCreatedAt(currentDate());
+        book.setUpdatedAt(currentDate());
         books.add(book);
         return books;
     }
@@ -68,8 +66,8 @@ public class BookHelper {
         dto.setImageUrl(IMAGE_URL);
         dto.setAuthor(createExistingAuthorDto());
         dto.setTags(createNewTagDtos());
-        dto.setCreatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
-        dto.setUpdatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
+        dto.setCreatedAt(currentDate());
+        dto.setUpdatedAt(currentDate());
         return dto;
     }
 
@@ -80,8 +78,8 @@ public class BookHelper {
         dto.setImageUrl(IMAGE_URL);
         dto.setAuthor(createExistingAuthorDto());
         dto.setTags(createNewTagDtos());
-        dto.setCreatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
-        dto.setUpdatedAt(ZonedDateTime.now(ZoneId.of(MINSK)));
+        dto.setCreatedAt(currentDate());
+        dto.setUpdatedAt(currentDate());
         return dto;
     }
 }

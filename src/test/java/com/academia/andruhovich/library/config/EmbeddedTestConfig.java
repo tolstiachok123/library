@@ -14,7 +14,7 @@ import java.io.IOException;
 public class EmbeddedTestConfig {
 
 	@Bean
-	public DataSource dataSource() throws IOException {
+	public DataSource dataSource() {
 		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
 		return builder.setType(EmbeddedDatabaseType.H2).build();
 	}

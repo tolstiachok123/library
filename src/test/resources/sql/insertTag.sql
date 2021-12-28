@@ -1,1 +1,0 @@
-INSERT INTO tags (id, name) VALUES (NULL, 'Horror');

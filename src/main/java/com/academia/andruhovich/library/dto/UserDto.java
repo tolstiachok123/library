@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -15,14 +16,16 @@ import java.util.Set;
 public class UserDto {
 
     private Long id;
-    @Pattern(regexp = "[A-ZА-Я][a-zа-я]*[-\\s]?([A-ZА-Я]?[a-zа-я]*[-\\s]?)*")
+    @Size(min = 1, max = 255)
     private String firstName;
-    @Pattern(regexp = "[A-ZА-Я][a-zа-я]*[-\\s]?([A-ZА-Я]?[a-zа-я]*[-\\s]?)*")
+    @Size(min = 1, max = 255)
     private String lastName;
-    @NotNull
+    @NotBlank
+    @Email
     private String email;
     private Set<RoleDto> roles;
-    @NotNull
+    @NotBlank
+    @Size(min = 1)
     private String password;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;

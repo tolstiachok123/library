@@ -39,12 +39,6 @@ class UserServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    private final User newUser = createNewUser();
-    private final User existingUser = createExistingUser();
-    private final UserDto existingUserDto = createExistingUserDto();
-    private final UserDto newUserDto = createNewUserDto();
-    private final Role existingRole = createExistingRole();
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -54,14 +48,14 @@ class UserServiceImplTest {
     @Test
     void add() {
         //given
-        when(mapper.dtoToModel(any())).thenReturn(newUser);
+        when(mapper.dtoToModel(any())).thenReturn(createNewUser());
         when(passwordEncoder.encode(any())).thenReturn(ENCRYPTED_PASSWORD);
-        when(roleRepository.getByName(any())).thenReturn(Optional.of(existingRole));
+        when(roleRepository.getByName(any())).thenReturn(Optional.of(createExistingRole()));
         when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
-        when(userRepository.save(any())).thenReturn(existingUser);
-        when(mapper.modelToDto(any())).thenReturn(existingUserDto);
+        when(userRepository.save(any())).thenReturn(createExistingUser());
+        when(mapper.modelToDto(any())).thenReturn(createExistingUserDto());
         //when
-        UserDto dto = service.add(newUserDto);
+        UserDto dto = service.add(createNewUserDto());
         //then
         assertNotNull(dto.getRoles());
         assertNull(dto.getPassword());

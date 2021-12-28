@@ -29,4 +29,10 @@ public class TagHelper {
         tagDtos.add(new TagDto(null, TAG_NAME));
         return tagDtos;
     }
+
+    public static Tag createNewTag() {
+        Tag tag = new Tag();
+        tag.setName(TAG_NAME);
+        return tag;
+    }
 }

@@ -1,6 +1,6 @@
 package com.academia.andruhovich.library.security;
 
-import com.academia.andruhovich.library.exception.NotFoundException;
+import com.academia.andruhovich.library.exception.ResourceNotFoundException;
 import com.academia.andruhovich.library.model.User;
 import com.academia.andruhovich.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = repository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND, email)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_NOT_FOUND, email)));
 
         return new CustomPrincipal(
                 user.getId(),
