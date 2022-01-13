@@ -1,0 +1,567 @@
+{
+	"info": {
+		"_postman_id": "ab791f6f-d830-432c-be4e-c146ff797ac4",
+		"name": "library",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "book",
+			"item": [
+				{
+					"name": "localhost:8088/api/books/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/books/",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/books/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/books/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"books",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/books/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"The Call of Cthulhu\",\r\n    \"price\": 48.00,\r\n    \"imageUrl\": \"url\",\r\n    \"author\": {\r\n        \"id\": 1,\r\n        \"firstName\": \"Hoard Philips\",\r\n        \"lastName\": \"Lovecraft\"\r\n    },\r\n    \"tags\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"Horror\"\r\n        }\r\n    ],\r\n    \"createdAt\": \"2021-11-08T02:34:47+03:00\",\r\n    \"updatedAt\": \"2021-11-08T02:34:47+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/books/",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/books/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"The Call of Cthulhu\",\r\n    \"price\": 50.00,\r\n    \"imageUrl\": \"the other one url\",\r\n    \"author\": {\r\n        \"id\": 1,\r\n        \"firstName\": \"Hoard Philips\",\r\n        \"lastName\": \"Lovecraft\"\r\n    },\r\n    \"tags\": [\r\n        {\r\n            \"name\": \"Detective\"\r\n        },\r\n        {\r\n            \"name\": \"Horror\"\r\n        }\r\n    ],\r\n    \"createdAt\": \"2021-11-08T02:34:47+03:00\",\r\n    \"updatedAt\": \"2021-11-08T02:34:47+03:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/books/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"books",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/books/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/books/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"books",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "author",
+			"item": [
+				{
+					"name": "localhost:8088/api/authors/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/authors/",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"authors",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/authors/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/authors/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"authors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/authors/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Hovard Philips\",\r\n    \"lastName\": \"Lovecraft\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/authors/",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"authors",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/authors/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG1haWwucnUiLCJyb2xlcyI6WyJyZWFkIiwiVVNFUiJdLCJpYXQiOjE2Mzc2NzUxMTgsImV4cCI6MTYzNzY3ODcxOH0.roy4Pu7xL8LQ8g9P2q_-Ew_HbcCQOURlhoKuIhyyhaE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Mark\",\r\n    \"lastName\": \"Twain\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/authors/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"authors",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/authors/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXlfYW5kcjE5OThAbWFpbC5ydSIsInJvbGVzIjpbInJlYWQiLCJBRE1JTiIsIlVTRVIiLCJkZWxldGUiLCJ3cml0ZSJdLCJpYXQiOjE2Mzc2NzQ3MDQsImV4cCI6MTYzNzY3ODMwNH0.KKBLVsF6c1IqXJDzCuzrt6kg77ItoCw3RY2qSJJ-5yI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/authors/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"authors",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "localhost:8088/api/auth/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"sergey_andr1998@mail.ru\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/registration",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ssss@mail.ru\",\r\n    \"firstName\": \"Sergey\",\r\n    \"lastName\": \"Andruhovich\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/registration",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "localhost:8088/api/orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXlfYW5kcjE5OThAbWFpbC5ydSIsInJvbGVzIjpbInJlYWQiLCJlZGl0IiwiQURNSU4iLCJVU0VSIiwid3JpdGUiLCJkZWxldGUiXSwiaWF0IjoxNjM5MzkyMzE0LCJleHAiOjE2MzkzOTU5MTR9.4U2nQ96FZLHBR5E759mbMEp_wIneTstl1SFq-bTisMA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/orders/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/orders/2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXlfYW5kcjE5OThAbWFpbC5ydSIsInJvbGVzIjpbInJlYWQiLCJlZGl0IiwiQURNSU4iLCJVU0VSIiwiZGVsZXRlIiwid3JpdGUiXSwiaWF0IjoxNjM4ODg1MzcyLCJleHAiOjE2Mzg4ODg5NzJ9.RcJNNrPpN1nN9OeWDi6WeGSF8fGI891kzAgc3sijrlg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8088/api/orders/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"orders",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/orders/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXlfYW5kcjE5OThAbWFpbC5ydSIsInJvbGVzIjpbInJlYWQiLCJlZGl0IiwiVVNFUiIsImRlbGV0ZSIsIndyaXRlIl0sImlhdCI6MTYzOTU4Njg5MywiZXhwIjoxNjM5NTkwNDkzfQ.dA3DoreTlObis8kpBQdboVHJR8WU8dcXCjvZWZ3YZug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"1\",\r\n    \"orderContent\":{\"2\":\"2\",\"1\":\"1\", \"4\":\"4\"},\r\n    \"status\":\"PAID\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/orders/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8088/api/orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnZXlfYW5kcjE5OThAbWFpbC5ydSIsInJvbGVzIjpbInJlYWQiLCJlZGl0IiwiVVNFUiIsImRlbGV0ZSIsIndyaXRlIl0sImlhdCI6MTYzOTU4Mzc2MiwiZXhwIjoxNjM5NTg3MzYyfQ.R0gmyfe312gPUEbRHVPnUViGY9W2G3fdLfigfTk6BoQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderContent\":{\"1\":\"1\",\"2\":\"2\", \"3\":\"3\"},\r\n    \"status\":\"DRAFT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8088/api/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8088",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
