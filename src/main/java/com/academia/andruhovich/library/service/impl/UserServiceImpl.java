@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
             throw new DuplicatedEmailException(String.format(BUSY_EMAIL, user.getEmail()));
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         Role role = roleRepository
                 .getByName(DEFAULT_ROLE)
                 .orElseThrow(() ->
@@ -58,5 +57,4 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(String.format(USER_NOT_FOUND, email)));
     }
-
 }
