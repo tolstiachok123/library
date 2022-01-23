@@ -23,7 +23,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_NOT_FOUND, email)));
 

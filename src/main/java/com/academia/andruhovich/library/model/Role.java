@@ -25,5 +25,4 @@ public class Role {
 	@JoinTable(name = "role_authority", joinColumns = {@JoinColumn(name = "role_id")},
 			inverseJoinColumns = {@JoinColumn(name = "authority_id")})
 	private Set<Authority> authorities;
-
 }

@@ -64,7 +64,7 @@ class AuthControllerTest {
     @Test
     void register() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/auth/registration")
+                        .post("/api/auth/registration")
                         .content(objectMapper.writeValueAsString(createUnregisteredUserDto()))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))

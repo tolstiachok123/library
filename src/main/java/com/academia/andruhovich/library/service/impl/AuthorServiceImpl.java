@@ -24,6 +24,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<AuthorDto> getAll() {
         return authorRepository.findAll().stream()
@@ -31,6 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public AuthorDto getAuthor(Long id) {
         return mapper.modelToDto(getById(id));

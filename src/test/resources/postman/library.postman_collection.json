@@ -386,7 +386,7 @@
 				{
 					"name": "localhost:8088/api/registration",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",

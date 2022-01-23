@@ -25,7 +25,7 @@ public class BookServiceImpl implements BookService {
     private final AuthorService authorService;
     private final TagService tagService;
 
-
+    @Transactional(readOnly = true)
     @Override
     public List<BookDto> getAll() {
         return repository.findAll().stream()
@@ -33,6 +33,7 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BookDto getById(Long id) {
         return mapper.modelToDto(getBookById(id));

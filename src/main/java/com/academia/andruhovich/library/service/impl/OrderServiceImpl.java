@@ -198,7 +198,6 @@ public class OrderServiceImpl implements OrderService {
 
         order.setHistory(jsonConverter.collectionToJsonString(synchronisedOrderContentWrappers));
         order.setTotalPrice(calculateTotalPrice(synchronisedOrderContentWrappers, synchronisedBooks));
-
         return order;
     }
 
