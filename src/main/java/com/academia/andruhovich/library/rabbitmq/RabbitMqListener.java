@@ -9,8 +9,13 @@ import org.springframework.stereotype.Component;
 public class RabbitMqListener {
 
     @RabbitListener(queues = "queue1")
-    public void processQueue1(String message) {
-        System.out.println("Received from queue 1: " + message);
+    public void process1Queue1(String message) {
+        System.out.println("Received to listener 1 from queue 1: " + message);
+    }
+
+    @RabbitListener(queues = "queue1")
+    public void process2Queue1(String message) {
+        System.out.println("Received to listener 2 from queue 1: " + message);
     }
 
 }

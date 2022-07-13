@@ -22,7 +22,9 @@ public class SampleController {
     @PostMapping("/{message}")
     @PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
     public ResponseEntity<String> postMessage(@PathVariable String message) {
-        template.convertAndSend("queue1", message);
+        for (int i = 0; i < 10; i++) {
+            template.convertAndSend("queue1", message);
+        }
         return ResponseEntity.status(OK).build();
     }
 
