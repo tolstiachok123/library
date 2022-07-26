@@ -125,4 +125,16 @@
 			)
 		</sql>
 	</changeSet>
+
+	<changeSet author = "tolstiachok123" id = "11">
+		<sql>
+			CREATE TABLE IF NOT EXISTS `message` (
+			`id` BIGINT NOT NULL AUTO_INCREMENT,
+			`message`  varchar(255) NOT NULL,
+			created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (`id`)
+			)
+		</sql>
+	</changeSet>
 </databaseChangeLog>
