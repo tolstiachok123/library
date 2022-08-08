@@ -11,5 +11,4 @@ public class AuthorityDto {
 
     private Long id;
     private String name;
-
 }

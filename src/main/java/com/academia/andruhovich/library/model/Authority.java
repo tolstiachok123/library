@@ -24,5 +24,4 @@ public class Authority {
 
     @Column(name = "name")
     private String name;
-
 }

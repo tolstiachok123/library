@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Validated
@@ -33,7 +32,7 @@ public class AuthController {
         return authenticate(requestDto.getEmail(), requestDto.getPassword());
     }
 
-    @PutMapping(value = "/registration")
+    @PostMapping(value = "/registration")
     public AuthResponseDto register(@RequestBody UserDto userDto) {
         service.add(userDto);
         return authenticate(userDto.getEmail(), userDto.getPassword());
