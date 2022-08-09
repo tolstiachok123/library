@@ -5,6 +5,7 @@ import com.academia.andruhovich.library.repository.BrokerRepository;
 import com.academia.andruhovich.library.service.BrokerService;
 import com.academia.andruhovich.library.util.DateHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,5 +23,10 @@ public class BrokerServiceImpl implements BrokerService {
 		message.setCreatedAt(DateHelper.currentDate());
 		message.setUpdatedAt(DateHelper.currentDate());
 		return repository.save(message);
+	}
+
+	@Cacheable(value = "messageCache")
+	public Message getById(Long id) {
+		return repository.getById(id);
 	}
 }

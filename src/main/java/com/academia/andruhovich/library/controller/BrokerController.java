@@ -7,6 +7,7 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
 
 @RestController
@@ -17,12 +18,16 @@ public class BrokerController {
     private final AmqpTemplate template;
     private final BrokerService service;
 
+    @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
+    public Message getMessage(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
     @PostMapping("/{message}")
     @PreAuthorize("hasAuthority('" + AUTHORITY_WRITE + "')")
-    public Message getMessage(@PathVariable String message) {
-        for (int i = 0; i < 10; i++) {
-            template.convertAndSend("queue1", message);
-        }
+    public Message createMessage(@PathVariable String message) {
+        template.convertAndSend("queue1", message);
         return service.add(message);
     }
 

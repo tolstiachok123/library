@@ -27,5 +27,7 @@ public class Constants {
     public static final String HISTORY = "[{\"book\": {\"id\": 1, \"tags\": [{\"id\": 1, \"name\": \"Horror\"}], \"price\": 48.00, \"title\": \"Dagon\", \"author\": {\"id\": 1, \"lastName\": \"Lovecraft\", \"firstName\": \"Hovard Philips\"}, \"imageUrl\": \"url\", \"createdAt\": \"2021-11-08T02:34:47+03:00[Europe/Minsk]\", \"updatedAt\": \"2021-11-08T02:34:47+03:00[Europe/Minsk]\"}, \"quantity\": 1}]";
     public static final String DAMAGED_HISTORY = "\"[{\"book\": {\"id\": 1, \"tags\": [{\"id\": 1, \"name\": \"Horror\"}], \"price\": 48.00, \"title\": \"Dagon\", \"author\": {\"id\": 1, \"lastName\": \"Lovecraft\", \"firstName\": \"Hovard Philips\"}, \"imageUrl\": \"url\", \"createdAt\": \"2021-11-08T02:34:47+03:00[Europe/Minsk]\", \"updatedAt\": \"2021-11-08T02:34:47+03:00[Europe/Minsk]\"}, \"quantity\": 1}]\"";
 
+    public static final String MESSAGE = "Be loyal to the one who is loyal to you";
+
     public static final Map<Long, Integer> ORDER_CONTENT = Collections.singletonMap(1L, 1);
 }
