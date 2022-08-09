@@ -24,6 +24,16 @@ services:
       - 5672:5672
       - 15672:15672
 
+  cache:
+    image: redis:latest
+    restart: unless-stopped
+    networks:
+      - web
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+
   app:
     image: library
     build:
@@ -36,9 +46,8 @@ services:
       - 8088:8088
     depends_on:
       - db
-      - rabbitmq
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"
+      - SPRING_PROFILES_ACTIVE=docker
 
 volumes:
   db_data: {}
