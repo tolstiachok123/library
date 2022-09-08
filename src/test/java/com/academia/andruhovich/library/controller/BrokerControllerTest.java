@@ -45,7 +45,7 @@ class BrokerControllerTest {
 
     @WithMockUser(username = "admin_mock", roles = "USER", authorities = AUTHORITY_READ, password = "12356")
     @Test
-    void getById() throws Exception {
+    void getMessage() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/rabbitmq/{id}", ID)
                         .accept(APPLICATION_JSON))

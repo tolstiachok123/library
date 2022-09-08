@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_READ;
 import static com.academia.andruhovich.library.security.SecurityAuthorities.AUTHORITY_WRITE;
 
+@CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 @RestController
 @RequestMapping("/api/rabbitmq")
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class BrokerController {
     private final AmqpTemplate template;
     private final BrokerService service;
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
     public Message getMessage(@PathVariable Long id) {
         return service.getById(id);
