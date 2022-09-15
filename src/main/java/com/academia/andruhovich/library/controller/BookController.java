@@ -37,6 +37,7 @@ public class BookController {
     private final BookService service;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
     public List<BookDto> getBooks() {
         return service.getAll();
     }

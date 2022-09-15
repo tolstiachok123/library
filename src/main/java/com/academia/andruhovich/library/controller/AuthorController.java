@@ -37,6 +37,7 @@ public class AuthorController {
 	private final AuthorService service;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('" + AUTHORITY_READ + "')")
 	public List<AuthorDto> getAuthors() {
 		return service.getAll();
 	}
